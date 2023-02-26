@@ -28,7 +28,7 @@ body {
         position: fixed;
         right: 1rem;
         width: 4rem;
-        top: 15rem;
+        top: 10rem;
         cursor: pointer;
         z-index: 2;
     }
@@ -37,7 +37,7 @@ body {
         position: fixed;
         right: 1rem;
         width: 4rem;
-        top: 20rem;
+        top: 15rem;
         cursor: pointer;
         z-index: 2;
     }
@@ -66,7 +66,7 @@ body {
         position: fixed;
         right: 0.5rem;
         width: 3rem;
-        top: 18.5rem;
+        top: 15rem;
         cursor: pointer;
         z-index: 2;
     }
@@ -75,7 +75,7 @@ body {
         position: fixed;
         right: 0.5rem;
         width: 3rem;
-        top: 22rem;
+        top: 18.5rem;
         cursor: pointer;
         z-index: 2;
     }

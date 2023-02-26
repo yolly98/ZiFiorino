@@ -8,6 +8,8 @@ import Item from './components/js/Item';
 
 import warningAlert from './images/warningAlert.png'
 import errorAlert from './images/errorAlert.png'
+import add from './images/add.png'
+import refresh from './images/refresh.png'
 
 class App extends Component{
 
@@ -17,14 +19,7 @@ class App extends Component{
         page: 'login',
         user: "",
         password: "",
-        items: [
-            {id:0, display: true, name: "sito0", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
-            {id:1, display: true, name: "sito1", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
-            {id:2, display: true, name: "sito2", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
-            {id:3, display: true, name: "sito3", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
-            {id:4, display: true, name: "sito4", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
-            {id:5, display: true, name: "sito5", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"}
-        ],
+        items: [],
         alert: {
             state: false,
             title: "example",
@@ -39,6 +34,21 @@ class App extends Component{
         let serverPort = window.SERVER_PORT;
         this.setState({serverIp, serverPort});
         */
+    }
+
+    getItems(){
+        let items = [];
+        for(let i = 0; i < 20; i++){
+            items.push(
+                {
+                    id: i,
+                    name: 'sito' + i,
+                    image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+                    display: "flex"
+                }
+            )
+        }
+        this.setState({items})
     }
 
     handleCloseAlert = () => {
@@ -70,11 +80,11 @@ class App extends Component{
       }
 
     handleLogin = (user, password) =>{
-        this.setState({user, password, page: "home"});
+        this.setState({user, password, page: "home"}, () => { this.getItems() });
     }
 
     handleSignup = (user, password) => {
-        this.setState({user, password, page: "home"});
+        this.setState({user, password, page: "home"}, () => { this.getItems() });
     }
     
     handleExit = () =>{
@@ -85,19 +95,32 @@ class App extends Component{
     handleSearch = inputText => {
         //console.log("search text pressed [" + inputText + "]")
         let searchingText = document.getElementById("input-search").value;
-        /*
-        let cards = [...this.state.cards];
-        for(let i = 0; i < cards.length; i++){
+        
+        let items = [...this.state.items];
+        for(let i = 0; i < items.length; i++){
           if(searchingText == "")
-            cards[i].display = "flex";
-          else if((cards[i].name.toLowerCase()).search(searchingText.toLowerCase()) == -1)
-            cards[i].display = "none";
+            items[i].display = "flex";
+          else if((items[i].name.toLowerCase()).search(searchingText.toLowerCase()) == -1)
+            items[i].display = "none";
           else
-            cards[i].display = "flex";
+            items[i].display = "flex";
     
         }
-        this.setState({cards});
-        */
+        this.setState({items});
+    }
+
+    handleAddCard(){
+        //console.log("add card pressed");
+        /*this.setState({itemMenu: -2});
+        document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+        document.getElementById('blocker1').style.display = 'block';*/
+        this.openAlert("Add item", "aggiunta item", warningAlert);
+    }
+
+    
+    handleRefresh(){
+        this.getItems();
+        this.openAlert("SUCCESS", "Elementi ricaricati", warningAlert);
     }
     
     handleOpenItem = item => {
@@ -112,7 +135,14 @@ class App extends Component{
         //this.setState({itemMenu: this.state.cards.indexOf(card)});
         //document.getElementsByTagName('body')[0].style.overflow = 'hidden';
         //document.getElementById('item-blocker').style.display = 'block';
-        this.openAlert("Delete Item", item.name, warningAlert);
+        let items = [...this.state.items];
+        items.splice(items.indexOf(item),1);
+        this.setState(
+          {items},
+          function(){
+            this.openAlert("SUCCESS", (item.name + " rimosso!"), warningAlert);
+          }
+        );
     
     }
       
@@ -186,6 +216,8 @@ class App extends Component{
                         onExit = {this.handleExit}
                         onSearch = {this.handleSearch}
                     />
+                    <img id="add-item" src={add} onClick={() => this.handleAddCard()} />
+                    <img id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
                     <div className='items-container'>
                     {
                         this.state.items.map(item => (
