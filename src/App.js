@@ -4,6 +4,7 @@ import './App.css'
 import Login from './components/js/Login';
 import Alert from './components/js/Alert';
 import Navbar from './components/js/Navbar';
+import Item from './components/js/Item';
 
 import warningAlert from './images/warningAlert.png'
 import errorAlert from './images/errorAlert.png'
@@ -16,7 +17,14 @@ class App extends Component{
         page: 'login',
         user: "",
         password: "",
-        items: [],
+        items: [
+            {id:0, display: true, name: "sito0", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
+            {id:1, display: true, name: "sito1", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
+            {id:2, display: true, name: "sito2", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
+            {id:3, display: true, name: "sito3", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
+            {id:4, display: true, name: "sito4", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"},
+            {id:5, display: true, name: "sito5", image: "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196"}
+        ],
         alert: {
             state: false,
             title: "example",
@@ -62,12 +70,10 @@ class App extends Component{
       }
 
     handleLogin = (user, password) =>{
-        let msg = "username: " + user + " , password: " + password;
         this.setState({user, password, page: "home"});
     }
 
     handleSignup = (user, password) => {
-        let msg = "username: " + user + " , password: " + password;
         this.setState({user, password, page: "home"});
     }
     
@@ -94,7 +100,21 @@ class App extends Component{
         */
     }
     
+    handleOpenItem = item => {
+        //this.setState({itemMenu: this.state.cards.indexOf(card)});
+        //document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+        //document.getElementById('item-blocker').style.display = 'block';
+        this.openAlert("Open Item", item.name, warningAlert);
+    
+    }
 
+    handleDeleteItem = item => {
+        //this.setState({itemMenu: this.state.cards.indexOf(card)});
+        //document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+        //document.getElementById('item-blocker').style.display = 'block';
+        this.openAlert("Delete Item", item.name, warningAlert);
+    
+    }
       
     render(){
         let page;
@@ -148,13 +168,40 @@ class App extends Component{
                             display: "none"
                         }} 
                     />
+                    <div 
+                        id="item-blocker" 
+                        style={{
+                            width: '100%', 
+                            height: '100%', 
+                            backgroundColor: 'black',
+                            opacity: '0.4', 
+                            position: 'fixed', 
+                            top: '0', 
+                            zIndex: '9', 
+                            display: "none"
+                        }} 
+                    />
                     <Navbar 
                         user = {this.state.user}
                         onExit = {this.handleExit}
                         onSearch = {this.handleSearch}
                     />
+                    <div className='items-container'>
+                    {
+                        this.state.items.map(item => (
+                        <Item
+                            key = {item.id}
+                            onOpenItem = {this.handleOpenItem}
+                            onDeleteItem = {this.handleDeleteItem}
+                            item = {item}
+                        />
+                        ))
+                    }
+                    </div>
                     {alert}
             </>
+
+            document.getElementsByTagName('body')[0].style.backgroundColor = "white";
         }
         return (
             <div id="main-page">

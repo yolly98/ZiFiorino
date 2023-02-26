@@ -6,3 +6,78 @@ body {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+
+@media (min-width: 601px){
+
+    input[type='text']{
+        text-align: center;
+    }
+
+    .items-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 0 2rem;
+        margin-bottom: 2rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #add-item{
+        position: fixed;
+        right: 1rem;
+        width: 4rem;
+        top: 15rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #refresh{
+        position: fixed;
+        right: 1rem;
+        width: 4rem;
+        top: 20rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+}
+
+/***************** for mobile device *****************/
+
+@media (max-width: 600px){
+
+    input[type='text']{
+        text-align: center;
+    }
+
+    .items-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 0 2rem;
+        margin-bottom: 2rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    #add-item{
+        position: fixed;
+        right: 0.5rem;
+        width: 3rem;
+        top: 18.5rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #refresh{
+        position: fixed;
+        right: 0.5rem;
+        width: 3rem;
+        top: 22rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+}
