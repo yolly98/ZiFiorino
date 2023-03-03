@@ -28,7 +28,11 @@ class App extends Component{
             state: false,
             title: "example",
             text: "exmaple text",
-            image: infoAlert
+            image: infoAlert,
+            confirmationDisplay: "none",
+            onCancel: null,
+            onConfirm: null,
+            optionalObject: null
         }
     }
 
@@ -66,16 +70,26 @@ class App extends Component{
             document.getElementsByTagName('body')[0].style.overflow = 'auto';
             document.getElementById('blocker').style.display = 'none';
           }
-        );
-        
-      }
+        );    
+    }
     
-    openAlert(title, text, image){
+    openAlert(title, text, image, confirmationDisplay = 'none', optionalObject = null){
         let alert = this.state.alert;
         alert.state = true;
         alert.title = title;
         alert.text = text;
         alert.image = image;
+        alert.confirmationDisplay = confirmationDisplay;
+        alert.optionalObject = optionalObject;
+
+        if(confirmationDisplay != "none"){
+            alert.onCancel = this.handleCloseAlert;
+            alert.onConfirm = this.deleteItem;
+        }
+        else{
+            alert.onCancel = null;
+            alert.onConfirm = null;
+        }
         this.setState(
           {alert},
           function(){
@@ -83,7 +97,7 @@ class App extends Component{
             document.getElementById('blocker').style.display = 'block';
           }
         );
-      }
+    }
 
     handleLogin = (user, password) =>{
         this.setState({user, password, page: "home"}, () => { this.getItems() });
@@ -118,7 +132,7 @@ class App extends Component{
     handleAddCard(){
         this.setState({itemMenu: -2});
         document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-        document.getElementById('blocker1').style.display = 'block';
+        document.getElementById('item-blocker').style.display = 'block';
     }
 
     
@@ -186,21 +200,24 @@ class App extends Component{
     }
 
     handleDeleteItem = item => {
+        this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item);    
+    }
 
+    deleteItem = () => {
         // TODO remove from database
 
         //this.setState({itemMenu: this.state.cards.indexOf(card)});
         //document.getElementsByTagName('body')[0].style.overflow = 'hidden';
         //document.getElementById('item-blocker').style.display = 'block';
+        let item = this.state.alert.optionalObject;
         let items = [...this.state.items];
         items.splice(items.indexOf(item),1);
         this.setState(
           {items},
           function(){
-            this.openAlert("SUCCESS", (item.name + " rimosso!"), infoAlert);
+            this.handleCloseAlert();
           }
         );
-    
     }
       
     render(){

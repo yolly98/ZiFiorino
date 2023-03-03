@@ -32,6 +32,10 @@ class ItemMenu extends Component{
         let image = this.state.item.image;
 
         document.getElementById("itemMenu-input-name").value = name;
+        document.getElementById("itemMenu-input-username").value = username;
+        document.getElementById("itemMenu-input-password").value = password;
+        document.getElementById("itemMenu-input-notes").value = notes;
+        document.getElementById("itemMenu-input-url").value = image;
 
         this.setState({ 
             name,

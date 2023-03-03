@@ -8,7 +8,8 @@ class Alert extends Component{
     state = {
         title: this.props.alert.title,
         text: this.props.alert.text,
-        image: this.props.alert.image
+        image: this.props.alert.image,
+        confirmationDisplay: this.props.alert.confirmationDisplay,
     }
 
     render(){
@@ -22,6 +23,10 @@ class Alert extends Component{
                     <div id="alert-container2">
                         <img id="alert-image" src={this.state.image}/>
                         <p id="alert-text">{this.state.text}</p>
+                    </div>
+                    <div id="alert-container3" style={{display: this.state.confirmationDisplay}}>
+                        <button className="alert-button" style={{borderRadius: '0.5rem'}} onClick={()=>this.props.alert.onCancel()}>ANNULLA</button>
+                        <button className="alert-button" style={{borderRadius: '0.5rem'}} onClick={()=>this.props.alert.onConfirm()}>CONFERMA</button>
                     </div>
                 </div>
             </div>
