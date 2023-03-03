@@ -9,6 +9,7 @@ import ItemMenu from './components/js/ItemMenu';
 
 import infoAlert from './images/infoAlert.png'
 import warningAlert from './images/warningAlert.png'
+import backup from './images/cloud.png'
 import errorAlert from './images/errorAlert.png'
 import add from './images/add.png'
 import refresh from './images/refresh.png'
@@ -33,7 +34,8 @@ class App extends Component{
             onCancel: null,
             onConfirm: null,
             optionalObject: null
-        }
+        },
+        backupMenu: false
     }
 
     componentDidMount(){
@@ -134,11 +136,14 @@ class App extends Component{
         document.getElementsByTagName('body')[0].style.overflow = 'hidden';
         document.getElementById('item-blocker').style.display = 'block';
     }
-
     
     handleRefresh(){
         this.getItems();
         this.openAlert("SUCCESS", "Elementi ricaricati", infoAlert);
+    }
+
+    handleOpenBackup(){
+        console.log("open backup");
     }
     
     handleOpenItem = item => {
@@ -224,6 +229,7 @@ class App extends Component{
         let page;
         let alert;
         let itemMenu;
+        let beckupMenu;
 
         if(this.state.alert.state){
             alert = <Alert
@@ -309,6 +315,7 @@ class App extends Component{
                     />
                     <img id="add-item" src={add} onClick={() => this.handleAddCard()} />
                     <img id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
+                    <img id="open-backup" src={backup} onClick={() => this.handleOpenBackup()} />
                     <div className='items-container'>
                     {
                         this.state.items.map(item => (

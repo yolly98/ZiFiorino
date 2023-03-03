@@ -41,6 +41,15 @@ body {
         cursor: pointer;
         z-index: 2;
     }
+
+    #open-backup{
+        position: fixed;
+        right: 1rem;
+        width: 3.5rem;
+        top: 20rem;
+        cursor: pointer;
+        z-index: 2;
+    }
 }
 
 /***************** for mobile device *****************/
@@ -76,6 +85,15 @@ body {
         right: 0.5rem;
         width: 3rem;
         top: 18.5rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #open-backup{
+        position: fixed;
+        right: 0.5rem;
+        width: 2.5rem;
+        top: 20rem;
         cursor: pointer;
         z-index: 2;
     }
