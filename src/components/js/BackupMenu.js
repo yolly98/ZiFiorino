@@ -20,7 +20,7 @@ class BackupMenu extends Component{
             backups.push(
                 {
                     id: i,
-                    date: "03/03/2023"
+                    date: "03/03/2023 - " + i
                 }
             );
         }
@@ -44,8 +44,8 @@ class BackupMenu extends Component{
                             >
                                 <label>{backup.date}</label>
                                 <div id="backupMenu-item-container">
-                                    <img src={create} style={{width: '2rem', cursor: 'pointer', marginRight: '1.2rem'}} onClick={()=>this.props.onNew()}/>
-                                    <img src={restore} style={{width: '2.5rem', cursor: 'pointer'}} onClick={()=>this.props.onRestore()}/>
+                                    <img src={create} style={{width: '2rem', cursor: 'pointer', marginRight: '1.2rem'}} onClick={()=>this.props.onNew(backup)}/>
+                                    <img src={restore} style={{width: '2.5rem', cursor: 'pointer'}} onClick={()=>this.props.onRestore(backup)}/>
                                 </div>
                             </div>
                             ))

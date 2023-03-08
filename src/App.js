@@ -64,6 +64,8 @@ class App extends Component{
         this.setState({items})
     }
 
+
+    // ---------------------- ALERT EVENTS -----------------------
     handleCloseAlert = () => {
         let alert = this.state.alert;
         alert.state = false;
@@ -76,7 +78,7 @@ class App extends Component{
         );    
     }
     
-    openAlert(title, text, image, confirmationDisplay = 'none', optionalObject = null){
+    openAlert(title, text, image, confirmationDisplay = 'none', optionalObject = null, cancelFunction = null, confirmFunction = null ){
         let alert = this.state.alert;
         alert.state = true;
         alert.title = title;
@@ -86,8 +88,8 @@ class App extends Component{
         alert.optionalObject = optionalObject;
 
         if(confirmationDisplay != "none"){
-            alert.onCancel = this.handleCloseAlert;
-            alert.onConfirm = this.deleteItem;
+            alert.onCancel =  cancelFunction;
+            alert.onConfirm = confirmFunction;
         }
         else{
             alert.onCancel = null;
@@ -102,6 +104,8 @@ class App extends Component{
         );
     }
 
+    // ---------------- LOGIN/SIGNUP EVENTS ---------------------
+
     handleLogin = (user, password) =>{
         this.setState({user, password, page: "home"}, () => { this.getItems() });
     }
@@ -109,6 +113,8 @@ class App extends Component{
     handleSignup = (user, password) => {
         this.setState({user, password, page: "home"}, () => { this.getItems() });
     }
+
+    // ------------------- NAVBAR EVENTS ------------------------
     
     handleExit = () =>{
         let items = [];
@@ -134,6 +140,8 @@ class App extends Component{
         this.setState({items});
     }
 
+    // ------------------ RAPID BUTTONS EVENT ------------------
+
     handleAddCard(){
         this.setState({itemMenu: -2});
         document.getElementsByTagName('body')[0].style.overflow = 'hidden';
@@ -152,12 +160,38 @@ class App extends Component{
         
     }
 
+    // ------------------- BACKUPMENU EVENTS ---------------------
+
     handleCloseBackupMenu = () => {
         this.setState({backupMenu: false});
         document.getElementsByTagName('body')[0].style.overflow = 'auto';
         document.getElementById('item-blocker').style.display = 'none';
     }
+
+    handleNewBackup = backup => {
+        let msg = "Vuoi sovrascrivere il backup del " + backup.date + "?";
+        this.openAlert("New Backup", msg, warningAlert, "flex", backup, this.handleCloseAlert, this.createNewBackup);
+    }
+
+    createNewBackup = () => {
+        let backup = this.state.alert.optionalObject;
+        console.log("create new backup (overwrite  " + backup.date + ")");
+        this.handleCloseAlert();
+    }
+
+    handleRestoreFromBackup = backup => {
+        let msg = "Vuoi importare il backup del " + backup.date + "?";
+        this.openAlert("Restore Backup", msg, warningAlert, "flex", backup, this.handleCloseAlert, this.restoreBackup);
+    }
+
+    restoreBackup = () => {
+        let backup = this.state.alert.optionalObject;
+        console.log("restore backup of " + backup.date );
+        this.handleCloseAlert();
+    }
     
+    // ----------------------- ITEM EVENTS -----------------------
+
     handleOpenItem = item => {
         this.setState({itemMenu: this.state.items.indexOf(item)});
         document.getElementsByTagName('body')[0].style.overflow = 'hidden';
@@ -217,7 +251,7 @@ class App extends Component{
     }
 
     handleDeleteItem = item => {
-        this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item);   
+        this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item, this.handleCloseAlert, this.deleteItem);   
         if(this.state.itemMenu > -1){
             this.setState({itemMenu: -1});
             document.getElementsByTagName('body')[0].style.overflow = 'auto';
@@ -241,6 +275,8 @@ class App extends Component{
           }
         );
     }
+
+    // ------------------------------------------------------
       
     render(){
         let page;
@@ -303,6 +339,8 @@ class App extends Component{
             if(this.state.backupMenu){
                 backupMenu = <BackupMenu 
                                 onCancel = {this.handleCloseBackupMenu}
+                                onNew = {this.handleNewBackup}
+                                onRestore = {this.handleRestoreFromBackup}
                             />
             }
             else

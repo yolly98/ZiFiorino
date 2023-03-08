@@ -15,7 +15,7 @@ class ItemMenu extends Component{
         username: "",
         password: 0,
         notes: "",
-        url: defaultImage
+        image: defaultImage
     }
 
     componentDidMount(){
@@ -79,7 +79,7 @@ class ItemMenu extends Component{
                         <img src={cross} style={{width: '1.5rem', cursor: 'pointer'}} onClick={()=>this.props.onCancel()}/>
                     </div>
                     <div id="itemMenu-container3">
-                        <img id="itemMenu-image" src={this.state.item.image}/>
+                        <img id="itemMenu-image" src={this.state.image}/>
                         <label className='itemMenu-label'>Nome</label>
                         <input className="itemMenu-text" id="itemMenu-input-name" type="text" style={{marginBottom: '1rem'}}/>
                         <label className='itemMenu-label'>Username</label>
