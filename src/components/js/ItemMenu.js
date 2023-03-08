@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../style/ItemMenu.css'
 
-import cross from '../../images/delete.png'
+import cross from '../../images/delete.png';
 import defaultImage from '../../images/defaultWebsite.png';
 import showPassw from '../../images/showPassw.png';
 import hidePassw from '../../images/hidePassw.png';
@@ -96,7 +96,7 @@ class ItemMenu extends Component{
                         <textarea className="itemMenu-text" id="itemMenu-input-notes"></textarea>
                     </div>
                     <div id="itemMenu-container4">
-                        <button className="itemMenu-button" style={{borderRadius: '0.5rem'}} onClick={()=>this.props.onRemove(this.state)}>RIMUOVI</button>
+                        <button className="itemMenu-button" style={{borderRadius: '0.5rem'}} onClick={()=>this.props.onRemove(this.state.item)}>RIMUOVI</button>
                         <button className="itemMenu-button" style={{borderRadius: '0.5rem'}} onClick={()=>this.props.onSave(this.state)}>SALVA</button>
                     </div>
                 </div>

@@ -6,6 +6,7 @@ import Alert from './components/js/Alert';
 import Navbar from './components/js/Navbar';
 import Item from './components/js/Item';
 import ItemMenu from './components/js/ItemMenu';
+import BackupMenu from './components/js/BackupMenu';
 
 import infoAlert from './images/infoAlert.png'
 import warningAlert from './images/warningAlert.png'
@@ -115,8 +116,8 @@ class App extends Component{
     }
 
     handleSearch = inputText => {
-        //console.log("search text pressed [" + inputText + "]")
-        let searchingText = document.getElementById("input-search").value;
+
+        let searchingText = inputText;
         
         let items = [...this.state.items];
         for(let i = 0; i < items.length; i++){
@@ -128,6 +129,8 @@ class App extends Component{
             items[i].display = "flex";
     
         }
+
+        document.getElementById("input-search").value = "";
         this.setState({items});
     }
 
@@ -142,8 +145,17 @@ class App extends Component{
         this.openAlert("SUCCESS", "Elementi ricaricati", infoAlert);
     }
 
-    handleOpenBackup(){
-        console.log("open backup");
+    handleOpenBackupMenu(){
+        this.setState({backupMenu: true});
+        document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+        document.getElementById('item-blocker').style.display = 'block';
+        
+    }
+
+    handleCloseBackupMenu = () => {
+        this.setState({backupMenu: false});
+        document.getElementsByTagName('body')[0].style.overflow = 'auto';
+        document.getElementById('item-blocker').style.display = 'none';
     }
     
     handleOpenItem = item => {
@@ -205,7 +217,12 @@ class App extends Component{
     }
 
     handleDeleteItem = item => {
-        this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item);    
+        this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item);   
+        if(this.state.itemMenu > -1){
+            this.setState({itemMenu: -1});
+            document.getElementsByTagName('body')[0].style.overflow = 'auto';
+            document.getElementById('item-blocker').style.display = 'none';
+        } 
     }
 
     deleteItem = () => {
@@ -229,7 +246,7 @@ class App extends Component{
         let page;
         let alert;
         let itemMenu;
-        let beckupMenu;
+        let backupMenu;
 
         if(this.state.alert.state){
             alert = <Alert
@@ -270,6 +287,7 @@ class App extends Component{
                 itemMenu = <ItemMenu 
                             onCancel = {this.handleCloseItem} 
                             onSave = {this.handleSaveItem} 
+                            onRemove = {this.handleDeleteItem}
                             item = {this.state.items[this.state.itemMenu]} 
                           />
             }else if(this.state.itemMenu == -2){
@@ -281,6 +299,14 @@ class App extends Component{
             }
             else
               itemMenu = <></>
+
+            if(this.state.backupMenu){
+                backupMenu = <BackupMenu 
+                                onCancel = {this.handleCloseBackupMenu}
+                            />
+            }
+            else
+                backupMenu = <></>
             page = <>
                     <div 
                         id="blocker" 
@@ -315,7 +341,7 @@ class App extends Component{
                     />
                     <img id="add-item" src={add} onClick={() => this.handleAddCard()} />
                     <img id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
-                    <img id="open-backup" src={backup} onClick={() => this.handleOpenBackup()} />
+                    <img id="open-backup" src={backup} onClick={() => this.handleOpenBackupMenu()} />
                     <div className='items-container'>
                     {
                         this.state.items.map(item => (
@@ -329,6 +355,7 @@ class App extends Component{
                     }
                     </div>
                     {itemMenu}
+                    {backupMenu}
                     {alert}
             </>
 
