@@ -517,13 +517,51 @@ class App extends Component{
     }
 
     handleSaveNewPassw = () => {
-        // TODO change passw and recrypt all db (also backups)
+        
+        let passw = document.getElementsByClassName("passwMenu-input")[0].value;
+        let r_passw = document.getElementsByClassName("passwMenu-input")[1].value;
+        if(passw != r_passw){
+            this.openAlert("ERROR", "Le password inserite non sono uguali", errorAlert);
+            return;
+        }
+        
+        // Test
         this.setState({passwMenu: false},
             () => {
                 document.getElementsByTagName('body')[0].style.overflow = 'auto';
                 document.getElementById('item-blocker').style.display = 'none';
                 this.openAlert("", "Password modificata con success", infoAlert);
             });
+
+        // --
+        /*
+        let json_msg = {"token": this.state.token, "passw": passw};
+        let url = this.state.serverIp + this.state.serverPort + "/backend/change-passw.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+                method : "POST",
+                headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    //console.log("change password success");
+                    this.openAlert("SUCCESS", "Password aggiornata con successo", infoAlert);
+                }
+                else {
+                    console.error(html.msg);
+                    let msg = "Qualcosa è andato storto...";
+                    this.openAlert("ERROR", msg, errorAlert);
+                }      
+            }
+        );
+        */
+        
     }
 
     // ------------------------------------------------------
