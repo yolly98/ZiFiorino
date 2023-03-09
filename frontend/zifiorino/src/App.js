@@ -22,11 +22,11 @@ import changePassw from './images/security.png'
 class App extends Component{
 
     state = {
-        erverIp: "",
+        serverIp: "",
         serverPort: "",
         page: 'login',
         user: "",
-        password: "",
+        token: "",
         items: [],
         itemMenu: -1,
         alert: {
@@ -44,16 +44,20 @@ class App extends Component{
     }
 
     componentDidMount(){
-        /*
-        let serverIp = window.SERVER_IP;
-        let serverPort = window.SERVER_PORT;
-        this.setState({serverIp, serverPort});
-        */
+
+        fetch('/config.json')
+        .then(response => response.json())
+        .then(data => {
+            let serverIp = data.server_ip;
+            let serverPort = data.server_port;
+            this.setState({serverIp, serverPort});
+        })
+        .catch(error => console.error(error));
     }
 
     getItems(){
 
-        // TODO request to database database
+        // Test
         let items = [];
         for(let i = 0; i < 20; i++){
             items.push(
@@ -66,8 +70,49 @@ class App extends Component{
             )
         }
         this.setState({items})
-    }
 
+        // ---
+        /*
+        let user = this.state.user;
+        let token = this.state.token;
+        let json_msg = {"token": token, "type": "get-items"};
+        let url = this.state.serverIp + this.state.serverPort + "/backend/get-items.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    let _items = html.msg;
+                    let items = [];
+                    //console.log(items);
+                    for(let i = 0; i < _items.length; i++){
+                        let id = _items[i].id;
+                        let item = _items[i].item.json();
+                        items.push(
+                            {
+                                id: id, 
+                                item: item
+                            }
+                        );
+                    }
+                    this.setState({login: false, _items});
+                    //console.log(items);
+                } else {
+                    console.error(html.msg);
+                    this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                }
+            }
+        );
+        */
+    }
 
     // ---------------------- ALERT EVENTS -----------------------
     handleCloseAlert = () => {
@@ -111,11 +156,92 @@ class App extends Component{
     // ---------------- LOGIN/SIGNUP EVENTS ---------------------
 
     handleLogin = (user, password) =>{
-        this.setState({user, password, page: "home"}, () => { this.getItems() });
+        this.setState({user, page: "home"}, () => { this.getItems() });
+
+        //console.log("login (" + user + ", " + password + ")");
+        /*
+        if(user == "" || password == ""){
+            this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
+            return;
+        }
+    
+        let json_msg = {"user": user, "passw": password, "type": "login"};
+        let url = this.state.serverIp + this.state.serverPort + "/backend/login.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    let token =  html.token;
+                    this.setState(
+                        {user, token},
+                        () => {this.getItems()}
+                        );
+                } else {
+                    console.error(html.msg);
+                    let msg = "";
+                    if(html.msg == "username or password not correct")
+                        msg = "Username o password non corretti";
+                    else
+                        msg = "Qualcosa è andato storto...";
+                    this.openAlert("ERROR", msg, errorAlert);
+                }
+            }
+        );
+        */
+  
     }
 
     handleSignup = (user, password) => {
-        this.setState({user, password, page: "home"}, () => { this.getItems() });
+        this.setState({user, page: "home"}, () => { this.getItems() });
+
+        //console.log("login (" + user + ", " + password + ")");
+        
+        /*
+        if(user == "" || password == ""){
+            this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
+            return;
+        }
+    
+        let json_msg = {"user": user, "passw": password, "type": "signup"};
+        let url = this.state.serverIp + this.state.serverPort + "/backend/login.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    //console.log("signup success");
+                    this.openAlert("SUCCESS", "Registrazione avvenuta con successo", infoAlert);
+                }
+                else {
+                    console.error(html.msg);
+                    let msg = "";
+                    if(html.msg == "Username already exists")
+                        msg = "Username già in uso";
+                    else
+                        msg = "Qualcosa è andato storto...";
+    
+                    this.openAlert("ERROR", msg, errorAlert);
+                }      
+            }
+        );
+        */
     }
 
     // ------------------- NAVBAR EVENTS ------------------------
@@ -259,6 +385,7 @@ class App extends Component{
                 items.push(item);
         }
         
+        // Test
         this.setState(
             {itemMenu: -1, items},
             function(){
@@ -267,7 +394,51 @@ class App extends Component{
                 document.getElementById('item-blocker').style.display = 'none';
             }
           );
-        // TODO save item in database
+        
+        // ---
+        /*
+        //html request
+        //console.log(item_db);
+        let json_msg = {};
+        json_msg.token = this.state.token;
+        json_msg.item = item;
+        if(isNewItem)
+          json_msg.type = "new";
+        else
+          json_msg.type = "update";
+        //console.log(json_msg);
+        let url = this.state.serverIp + this.state.serverPort +"/backend/newUpdateItem.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                  if(isNewItem)
+                    items[items.length - 1].id = Number(html.id);
+                    //console.log(cards);
+                    this.setState(
+                        {itemMenu: -1, items},
+                        function(){
+                            this.openAlert("SUCCESS", "Salvataggio avvenuto con successo", infoAlert);
+                        }
+                    );
+                    document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                    document.getElementById('blocker1').style.display = 'none'; 
+                } else {
+                    // console.error(html.msg);
+                    this.openAlert("ERROR", "Salvataggio fallito", infoAlert);
+                }
+            }
+        );
+        */
     }
 
     handleDeleteItem = item => {
@@ -282,12 +453,10 @@ class App extends Component{
     }
 
     deleteItem = () => {
-        // TODO remove from database
-
-        //this.setState({itemMenu: this.state.cards.indexOf(card)});
-        //document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-        //document.getElementById('item-blocker').style.display = 'block';
+        
         let item = this.state.alert.optionalObject;
+
+        // Test
         let items = [...this.state.items];
         items.splice(items.indexOf(item),1);
         this.setState(
@@ -296,6 +465,44 @@ class App extends Component{
             this.handleCloseAlert();
           }
         );
+
+        // ---
+        /*
+        //console.log("delete button pressed [" + card.name + "]");
+        //html request
+        let json_msg = {};
+        json_msg.token = this.state.token;
+        json_msg.id = card.id;
+        //console.log(json_msg);
+        let url = this.state.serverIp + this.state.serverPort + "/backend/removeItem.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    let items = [...this.state.items];
+                    items.splice(items.indexOf(item), 1);
+                    this.setState(
+                        {items},
+                        function(){
+                            this.openAlert("SUCCESS", (item.name + " rimosso!"), infoAlert);
+                        }
+                    );
+                } else {
+                    // console.error(html.msg);
+                    this.openAlert("ERROR", ("Rimozione di " + item.name + " fallita"), errorAlert);
+                }
+            }
+        );
+        */
     }
 
     // ----------------------- PASSW MENU EVENTS -----------------------
