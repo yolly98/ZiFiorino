@@ -1,11 +1,13 @@
+@import url('BaseStyle.css');
+
 @media (min-width: 601px){
 
     #alert-container{
         position: fixed;
-        background-color: #6b8ea2;
+        background-color: var(--color3);
         padding: 1rem 2rem 2rem 2rem;
         border-radius: 1rem;
-        border: 0.2rem solid #2a5a76;
+        border: 0.2rem solid var(--color1);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -39,7 +41,6 @@
     #alert-title{
         font-size: 1.2rem;
         font-weight: bold;
-        color: #2a5a76;
         margin: 0;
     }
 
@@ -54,26 +55,10 @@
     }
 
     #alert-text{
-        color: white;
         font-size: 1rem;
         text-align: center;
     }
 
-    .alert-button{
-        color: #2a5a76;
-        border: 0.2rem solid #2a5a76;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: #bdcbdd;
-        cursor: pointer;
-    }
-
-    .alert-button:active{
-        border-color: #bdcbdd;
-        color: #bdcbdd;
-        background-color: #2a5a76;
-    }
 }
 
 /***************** for mobile device *****************/
@@ -82,10 +67,10 @@
 
     #alert-container{
         position: fixed;
-        background-color: #6b8ea2;
+        background-color: var(--color3);
         padding: 0.5rem 1rem 1rem 1rem;
         border-radius: 1rem;
-        border: 0.2rem solid #2a5a76;
+        border: 0.2rem solid var(--color1);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -119,7 +104,6 @@
     #alert-title{
         font-size: 1.2rem;
         font-weight: bold;
-        color: #2a5a76;
         margin: 0;
     }
 
@@ -134,24 +118,8 @@
     }
 
     #alert-text{
-        color: white;
         font-size: 1rem;
         text-align: center;
     }
 
-    .alert-button{
-        color: #2a5a76;
-        border: 0.2rem solid #2a5a76;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: #bdcbdd;
-        cursor: pointer;
-    }
-
-    .alert-button:active{
-        border-color: #bdcbdd;
-        color: #bdcbdd;
-        background-color: #2a5a76;
-    }
 }

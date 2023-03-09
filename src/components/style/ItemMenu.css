@@ -1,3 +1,5 @@
+@import url('BaseStyle.css');
+
 @media (min-width: 601px){
 
     #itemMenu-section{
@@ -11,7 +13,7 @@
     }
 
     #itemMenu-container{
-        background-color: rgb(107, 142, 162);
+        background-color: var(--color3);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -57,18 +59,6 @@
         margin-bottom: 0.5rem;
     }
 
-    .itemMenu-text{
-        background-color: #bdcbdd;
-        border-radius: 0.5rem;
-        border: 0 transparent;
-        height: 2rem;
-        width: 15rem;
-        color: white;
-        font-size: 1rem;
-        color: #2a5a76;
-        text-align: center;
-    }
-
     #itemMenu-input-notes{
         width: 100%;
         height: 8rem;
@@ -77,22 +67,6 @@
 
     .itemMenu-text:active{
         border: 0 transparent;
-    }
-
-    .itemMenu-button{
-        color: #2a5a76;
-        border: 0.2rem solid #2a5a76;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: #bdcbdd;
-        cursor: pointer;
-    }
-
-    .itemMenu-button:active{
-        border-color: #bdcbdd;
-        color: #bdcbdd;
-        background-color: #2a5a76;
     }
 
     #itemMenu-copy{
@@ -127,7 +101,7 @@
 
     #itemMenu-container{
         position: absolute;
-        background-color: rgb(107, 142, 162);
+        background-color: var(--color3);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -153,36 +127,8 @@
         font-size: 0.8rem;
     }
 
-    .itemMenu-text{
-        background-color: #bdcbdd;
-        border-radius: 0.5rem;
-        border: 0 transparent;
-        height: 1.8rem;
-        width: 15rem;
-        color: white;
-        font-size: 0.8rem;
-        color: #2a5a76;
-        text-align: center;
-    }
-
     .itemMenu-text:active{
         border: 0 transparent;
-    }
-
-    .itemMenu-button{
-        color: #2a5a76;
-        border: 0.2rem solid #2a5a76;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: #bdcbdd;
-        cursor: pointer;
-    }
-
-    .itemMenu-button:active{
-        border-color: #bdcbdd;
-        color: #bdcbdd;
-        background-color: #2a5a76;
     }
 
 }

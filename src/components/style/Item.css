@@ -1,3 +1,5 @@
+@import url('BaseStyle.css');
+
 @media (min-width: 601px){
 
     .item-col{
@@ -7,7 +9,7 @@
     }
 
     .item-container{
-        background-color: rgb(42, 90, 118);
+        background-color: var(--color1);
         width: 40rem;
         padding: 1rem;
         border-radius: 1rem;
@@ -40,7 +42,6 @@
     }
 
     .item-title{
-        color: white;
         font-weight: bold;
         margin: 0;
         margin-top: 0.3rem;
@@ -63,7 +64,7 @@
     }
 
     .item-container{
-        background-color: rgb(42, 90, 118);
+        background-color: var(--color1);
         width: 9rem;
         padding: 1rem;
         border-radius: 0.5rem;
@@ -93,7 +94,6 @@
     }
     
     .item-title{
-        color: white;
         font-weight: bold;
         margin: 0;
         font-size: 0.7rem;
