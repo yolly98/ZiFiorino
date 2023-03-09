@@ -10,9 +10,6 @@ body {
 
 @media (min-width: 601px){
 
-    input[type='text']{
-        text-align: center;
-    }
 
     .items-container{
         width: 100%;
@@ -50,15 +47,31 @@ body {
         cursor: pointer;
         z-index: 2;
     }
+
+    #change-passw{
+        position: fixed;
+        left: 1rem;
+        width: 3.5rem;
+        top: 10rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+    
+    #user-guide{
+        position: fixed;
+        left: 1rem;
+        width: 3.5rem;
+        top: 50rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
 }
 
 /***************** for mobile device *****************/
 
 @media (max-width: 600px){
 
-    input[type='text']{
-        text-align: center;
-    }
 
     .items-container{
         width: 100%;
@@ -92,6 +105,24 @@ body {
     #open-backup{
         position: fixed;
         right: 0.5rem;
+        width: 2.5rem;
+        top: 20rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #change-passw{
+        position: fixed;
+        left: 0.5rem;
+        width: 2.5rem;
+        top: 15rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #user-guide{
+        position: fixed;
+        left: 0.5rem;
         width: 2.5rem;
         top: 20rem;
         cursor: pointer;

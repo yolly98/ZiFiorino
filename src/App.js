@@ -7,6 +7,7 @@ import Navbar from './components/js/Navbar';
 import Item from './components/js/Item';
 import ItemMenu from './components/js/ItemMenu';
 import BackupMenu from './components/js/BackupMenu';
+import PasswMenu from './components/js/PasswMenu';
 
 import infoAlert from './images/infoAlert.png'
 import warningAlert from './images/warningAlert.png'
@@ -15,6 +16,8 @@ import errorAlert from './images/errorAlert.png'
 import add from './images/add.png'
 import refresh from './images/refresh.png'
 import defaultWebSite from './images/defaultWebsite.png'
+import userGuide from './images/guide.png'
+import changePassw from './images/security.png'
 
 class App extends Component{
 
@@ -36,7 +39,8 @@ class App extends Component{
             onConfirm: null,
             optionalObject: null
         },
-        backupMenu: false
+        backupMenu: false,
+        passwMenu: false
     }
 
     componentDidMount(){
@@ -154,10 +158,23 @@ class App extends Component{
     }
 
     handleOpenBackupMenu(){
-        this.setState({backupMenu: true});
-        document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-        document.getElementById('item-blocker').style.display = 'block';
-        
+        this.setState({backupMenu: true},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+                document.getElementById('item-blocker').style.display = 'block';
+            });
+    }
+
+    handleChangePassw(){
+        this.setState({passwMenu: true},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+                document.getElementById('item-blocker').style.display = 'block';
+            });
+    }
+
+    handleOpenUserGuide(){
+        window.open('/user-guide.pdf', '_blank')
     }
 
     // ------------------- BACKUPMENU EVENTS ---------------------
@@ -193,16 +210,19 @@ class App extends Component{
     // ----------------------- ITEM EVENTS -----------------------
 
     handleOpenItem = item => {
-        this.setState({itemMenu: this.state.items.indexOf(item)});
-        document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-        document.getElementById('item-blocker').style.display = 'block';
-        
+        this.setState({itemMenu: this.state.items.indexOf(item)},
+        () => {
+            document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+            document.getElementById('item-blocker').style.display = 'block';
+        });
     }
 
     handleCloseItem = () => {
-        this.setState({itemMenu: -1});
-        document.getElementsByTagName('body')[0].style.overflow = 'auto';
-        document.getElementById('item-blocker').style.display = 'none';
+        this.setState({itemMenu: -1},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'auto';
+            document.getElementById('item-blocker').style.display = 'none';
+            });
     }
 
     handleSaveItem = state => {
@@ -253,9 +273,11 @@ class App extends Component{
     handleDeleteItem = item => {
         this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item, this.handleCloseAlert, this.deleteItem);   
         if(this.state.itemMenu > -1){
-            this.setState({itemMenu: -1});
-            document.getElementsByTagName('body')[0].style.overflow = 'auto';
-            document.getElementById('item-blocker').style.display = 'none';
+            this.setState({itemMenu: -1}, 
+                () => {
+                    document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                    document.getElementById('item-blocker').style.display = 'none';
+                });
         } 
     }
 
@@ -276,6 +298,27 @@ class App extends Component{
         );
     }
 
+    // ----------------------- PASSW MENU EVENTS -----------------------
+
+    handleClosePasswMenu = () => {
+        this.setState({passwMenu: false},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                document.getElementById('item-blocker').style.display = 'none';
+            });
+        
+    }
+
+    handleSaveNewPassw = () => {
+        // TODO change passw and recrypt all db (also backups)
+        this.setState({passwMenu: false},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                document.getElementById('item-blocker').style.display = 'none';
+                this.openAlert("", "Password modificata con success", infoAlert);
+            });
+    }
+
     // ------------------------------------------------------
       
     render(){
@@ -283,6 +326,7 @@ class App extends Component{
         let alert;
         let itemMenu;
         let backupMenu;
+        let passwMenu;
 
         if(this.state.alert.state){
             alert = <Alert
@@ -345,6 +389,15 @@ class App extends Component{
             }
             else
                 backupMenu = <></>
+
+            if(this.state.passwMenu){
+                passwMenu = <PasswMenu
+                                onCancel = {this.handleClosePasswMenu} 
+                                onSave = {this.handleSaveNewPassw}
+                            />
+            }
+            else
+                passwMenu = <></>
             page = <>
                     <div 
                         id="blocker" 
@@ -380,6 +433,9 @@ class App extends Component{
                     <img id="add-item" src={add} onClick={() => this.handleAddCard()} />
                     <img id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
                     <img id="open-backup" src={backup} onClick={() => this.handleOpenBackupMenu()} />
+                    <img id="change-passw" src={changePassw} onClick={() => this.handleChangePassw()} />
+                    <img id="user-guide" src={userGuide} onClick={() => this.handleOpenUserGuide()} />
+
                     <div className='items-container'>
                     {
                         this.state.items.map(item => (
@@ -394,6 +450,7 @@ class App extends Component{
                     </div>
                     {itemMenu}
                     {backupMenu}
+                    {passwMenu}
                     {alert}
             </>
 
