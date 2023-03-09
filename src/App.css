@@ -15,7 +15,6 @@ body {
         width: 100%;
         display: flex;
         flex-wrap: nowrap;
-        padding: 0 2rem;
         margin-bottom: 2rem;
         flex-direction: column;
         align-items: center;
@@ -71,62 +70,5 @@ body {
 /***************** for mobile device *****************/
 
 @media (max-width: 600px){
-
-
-    .items-container{
-        width: 100%;
-        display: flex;
-        flex-wrap: nowrap;
-        padding: 0 2rem;
-        margin-bottom: 2rem;
-        flex-direction: column;
-        align-items: center;
-    }
-
-
-    #add-item{
-        position: fixed;
-        right: 0.5rem;
-        width: 3rem;
-        top: 15rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #refresh{
-        position: fixed;
-        right: 0.5rem;
-        width: 3rem;
-        top: 18.5rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #open-backup{
-        position: fixed;
-        right: 0.5rem;
-        width: 2.5rem;
-        top: 20rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #change-passw{
-        position: fixed;
-        left: 0.5rem;
-        width: 2.5rem;
-        top: 15rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #user-guide{
-        position: fixed;
-        left: 0.5rem;
-        width: 2.5rem;
-        top: 20rem;
-        cursor: pointer;
-        z-index: 2;
-    }
 
 }

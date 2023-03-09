@@ -359,7 +359,7 @@ class App extends Component{
                     {alert}
             </>
 
-            document.getElementsByTagName('body')[0].style.backgroundColor = "#2a5a76";
+            document.getElementsByTagName('body')[0].style.backgroundColor = "var(--color1)";
         }
 
         else if (this.state.page == 'home'){
@@ -454,7 +454,7 @@ class App extends Component{
                     {alert}
             </>
 
-            document.getElementsByTagName('body')[0].style.backgroundColor = "white";
+            document.getElementsByTagName('body')[0].style.backgroundColor = "var(--color2)";
         }
         return (
             <div id="main-page">

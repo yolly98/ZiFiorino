@@ -57,47 +57,5 @@
 
 @media (max-width: 600px){
 
-    .item-col{
-        z-index: 1;
-        margin: 2rem 1rem 0px;
-        display: flex;
-    }
-
-    .item-container{
-        background-color: var(--color1);
-        width: 9rem;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-
-    .image-item{
-        max-width: 3rem;
-        height: 3rem;
-        border-radius: 0.5rem;
-    }
-
-    .img-delete{
-        width: 1.2rem;
-        cursor: pointer;
-    }
-
-    .item-title-container{
-        display: flex;
-        height: 2rem;
-        align-items: center;
-        margin-top: 0.5rem;
-    }
-    
-    .item-title{
-        font-weight: bold;
-        margin: 0;
-        font-size: 0.7rem;
-        text-align: center;
-    }
 
 }

@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import '../style/Login.css'
 
+import logo from '../../images/logo.png'
+
 class Login extends Component{
 
     render(){
         return(
             <div id="login-page">
+                <div id="login-logo-container">
+                    <img id="login-logo" src={logo}/>
+                </div>
                 <label id="login-title">ZiFiorino</label>
                 <label>Nome Utente</label>
                 <input id="login-input-user" type="text" style={{marginBottom: '1rem'}}/>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import search from '../../images/search.png'
 import exit from '../../images/exit.png'
+import logo from '../../images/logo.png'
 
 import '../style/Navbar.css'
 
@@ -12,7 +13,10 @@ class Navbar extends Component{
         <div id="nav-container1">
           
           <div id="nav-container2">
-            <label id="nav-name">ZiFiorino</label>
+            <div id="nav-logo-container">
+              <img id="nav-logo" src={logo}/>
+            </div>
+            <label id="nav-title">ZiFiorino</label>
           </div>
 
           <div id="nav-container3">

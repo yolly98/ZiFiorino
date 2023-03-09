@@ -7,7 +7,21 @@
         z-index: 1;
     }
 
-    #nav-name{
+    #nav-logo-container{
+        border-radius: 3rem;
+        background-color: var(--color4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        margin-right: 1rem;
+    }
+
+    #nav-logo{
+        height: 4rem;
+    }
+
+    #nav-title{
         font-size: 2rem;
         font-weight: bold;
     }
@@ -63,8 +77,9 @@
     }
 
     #input-search{
-        background-color: var(--color3);
+        background-color: var(--color4);
         color: var(--color2);
+        color: var(--color1)
     }
 
     #input-search:active{
@@ -87,86 +102,5 @@
 
 @media (max-width: 600px){
 
-    #nav{
-        background-color: var(--color1);
-        z-index: 1;
-    }
-
-    #nav-name{
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    #nav-container1{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #nav-container2{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        width: 100%;
-        align-items: center;
-    }
-
-    #nav-container3{
-        display: flex;
-        align-content: flex-end;
-        flex-wrap: nowrap;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    #nav-container4{
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-
-    #nav-container5{
-        margin-bottom: 0.5rem;
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-    }
-
-    #img-exit{
-        width: 1rem;
-        margin-left: 1rem;
-        margin-right: 1rem;
-        cursor: pointer;
-    }
-
-    #img-filter{
-        width: 2.5rem;
-        margin-left: 1rem;
-        margin-right: 1rem;
-        cursor: pointer;
-    }
-
-    #input-search{
-        background-color: var(--color3);
-        color: var(--color2);
-    }
-
-    #input-search:active{
-        border: 0 transparent;
-    }
-
-
-    .botton-icon{
-        border-radius: 0.5rem;
-        background-color: var(--color1);
-        z-index: 1;
-    }
-
-    .botton-icon:hover{
-        background-color: var(--color3);
-    }
+    
 }
