@@ -13,7 +13,7 @@ use zifiorino_db;
 drop table if exists USER;
 create table USER(
     user varchar(100) not null,
-    passw varchar(500) not null
+    passw varchar(500) not null,
     primary key(user)
 )engine=InnoDB default charset=latin1;
 
