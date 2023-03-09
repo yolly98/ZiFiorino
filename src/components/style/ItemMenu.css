@@ -71,66 +71,40 @@
         border: 0 transparent;
     }
 
-    #itemMenu-copy{
-        height: 2rem;
-        width: 2rem;
-        cursor: pointer;
-        margin-bottom: 1rem;
-        margin-left: 1rem;
-    }
-
     #itemMenu-showPassw{
         height: 2rem;
         width: 2rem;
         cursor: pointer;
-        margin-bottom: 1rem;
         margin-left: 1rem;
     }
+
+    #itemMenu-copy{
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+        margin-left: 1rem;
+    }
+
+    #itemMenu-copy-tooltip{
+        background-color: var(--color1);
+        padding: 0.5rem;
+        display: flex;
+        opacity: 0;
+        height: 1.5rem;
+        border-radius: 0.5rem;
+        margin-left: 1rem;
+    }
+
+    #itemMenu-copy:hover + #itemMenu-copy-tooltip{
+        opacity: 1;
+    }
+
 }
 
 /***************** for mobile device *****************/
 
 @media (max-width: 600px){
-    #itemMenu-section{
-        z-index: 4;
-        width: 100%;
-        display: flex;
-        position: fixed;
-        height: 100%;
-        top: 0;
-        left: 0;
-    }
-
-    #itemMenu-container{
-        position: absolute;
-        background-color: var(--color3);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
-        border-radius: 1rem;
-        max-height: 90%;
-        max-width: 90%;
-        overflow: auto;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        overflow-x: hidden;
-    }
-
-    #itemMenu-image{
-        height: 10rem;
-        border-radius: 0.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .itemMenu-label{
-        margin: 0;
-        font-size: 0.8rem;
-    }
-
-    .itemMenu-text:active{
-        border: 0 transparent;
-    }
+    
+    
 
 }

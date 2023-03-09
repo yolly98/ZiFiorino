@@ -4,7 +4,6 @@ import '../style/ItemMenu.css'
 import cross from '../../images/delete.png';
 import defaultImage from '../../images/defaultWebsite.png';
 import showPassw from '../../images/showPassw.png';
-import hidePassw from '../../images/hidePassw.png';
 import copy from '../../images/copy.png';
 
 class ItemMenu extends Component{
@@ -60,15 +59,10 @@ class ItemMenu extends Component{
     showPassw(){
 
         let passw = document.getElementById("itemMenu-input-password");
-        let passwImage = document.getElementById("itemMenu-showPassw");
-        if(passw.type == 'text'){
+        if(passw.type == 'text')
             passw.type = 'password';
-            passwImage.src = hidePassw; 
-        }
-        else{
+        else
             passw.type = 'text';
-            passwImage.src = showPassw;
-        }
     }
 
     render(){
@@ -85,10 +79,11 @@ class ItemMenu extends Component{
                         <label className='itemMenu-label'>Username</label>
                         <input className="itemMenu-text" id="itemMenu-input-username" type="text" style={{marginBottom: '1rem'}}/>
                         <label className='itemMenu-label'>Password</label>
-                        <div id="itemMenu-passwContainer">
-                            <input className="itemMenu-text" id="itemMenu-input-password" type="password" style={{marginBottom: '1rem'}}/>
-                            <img id="itemMenu-showPassw" src={hidePassw} onClick={() => this.showPassw()}></img>
+                        <div id="itemMenu-passwContainer" style={{marginBottom: '1rem'}}>
+                            <input className="itemMenu-text" id="itemMenu-input-password" type="password"/>
+                            <img id="itemMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw()} onMouseUp={() => this.showPassw()}></img>
                             <img id="itemMenu-copy" src={copy} onClick={() => this.copy()}></img>
+                            <div id="itemMenu-copy-tooltip"><label>Copia</label></div>
                         </div>
                         <label className='itemMenu-label'>Url Icona</label>
                         <input  className="itemMenu-text" id="itemMenu-input-url" type="text" style={{marginBottom: '1rem'}}/>

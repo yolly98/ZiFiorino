@@ -4,7 +4,6 @@ import '../style/PasswMenu.css';
 import cross from '../../images/delete.png';
 import changePassw from '../../images/security.png';
 import showPassw from '../../images/showPassw.png';
-import hidePassw from '../../images/hidePassw.png';
 
 class PasswMenu extends Component{
 
@@ -13,15 +12,10 @@ class PasswMenu extends Component{
     showPassw(index){
 
         let passw = document.getElementsByClassName("passwMenu-input")[index];
-        let passwImage = document.getElementsByClassName("passwMenu-showPassw")[index];
-        if(passw.type == 'text'){
+        if(passw.type == 'text')
             passw.type = 'password';
-            passwImage.src = hidePassw; 
-        }
-        else{
+        else
             passw.type = 'text';
-            passwImage.src = showPassw;
-        }
     }
 
     render(){
@@ -38,12 +32,12 @@ class PasswMenu extends Component{
                             <label className="passwMenu-label">Inserisci Nuova Password</label>
                             <div className="passwMenu-passwContainer">
                                 <input className="passwMenu-input" type='password'></input>
-                                <img className="passwMenu-showPassw" src={hidePassw} onClick={() => this.showPassw(0)}></img>
+                                <img className="passwMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw(0)} onMouseUp={() => this.showPassw(0)}></img>
                             </div>
                             <label className="passwMenu-label">Ripeti Nuova Password</label>
                             <div className="passwMenu-passwContainer">
                                 <input className="passwMenu-input" type='password'></input>
-                                <img className="passwMenu-showPassw" src={hidePassw} onClick={() => this.showPassw(1)}></img>
+                                <img className="passwMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw(1)} onMouseUp={() => this.showPassw(1)}></img>
                             </div>
                         </div>
                     </div>
