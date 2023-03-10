@@ -21,9 +21,9 @@ create table USER(
 /*
  TABLE ITEM
 
-    +----+------+------+----------+------+
-    | id | user | name | urlImage | item |
-    +----+------+------+----------+------+
+    +----+------+------+----------+----+------+
+    | id | user | name | urlImage | iv | item |
+    +----+------+------+----------+----+------+
 
 */
 
@@ -33,6 +33,7 @@ create table ITEM(
     user varchar(100) not null,
     name varchar(100) not null,
     urlImage varchar(500) not null,
+    iv varchar(100) not null,
     item blob not null, 
     primary key(id)
 )engine=InnoDB default charset=latin1;

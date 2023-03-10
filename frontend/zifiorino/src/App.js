@@ -22,8 +22,7 @@ import changePassw from './images/security.png'
 class App extends Component{
 
     state = {
-        serverIp: "",
-        serverPort: "",
+        serverUrl: '',
         page: 'login',
         user: "",
         token: "",
@@ -48,9 +47,8 @@ class App extends Component{
         fetch('/config.json')
         .then(response => response.json())
         .then(data => {
-            let serverIp = data.server_ip;
-            let serverPort = data.server_port;
-            this.setState({serverIp, serverPort});
+            let serverUrl = data.server_url;
+            this.setState({serverUrl});
         })
         .catch(error => console.error(error));
     }
@@ -156,17 +154,16 @@ class App extends Component{
     // ---------------- LOGIN/SIGNUP EVENTS ---------------------
 
     handleLogin = (user, password) =>{
-        this.setState({user, page: "home"}, () => { this.getItems() });
 
         //console.log("login (" + user + ", " + password + ")");
-        /*
+        
         if(user == "" || password == ""){
             this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
     
         let json_msg = {"user": user, "passw": password, "type": "login"};
-        let url = this.state.serverIp + this.state.serverPort + "/backend/login.php";
+        let url = this.state.serverUrl + "login.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
             method : "POST",
@@ -181,14 +178,15 @@ class App extends Component{
             html => {
                 if (html.status == "SUCCESS") {
                     let token =  html.token;
+                    console.log(token);
                     this.setState(
-                        {user, token},
+                        {user, token, page: "home"},
                         () => {this.getItems()}
                         );
                 } else {
                     console.error(html.msg);
                     let msg = "";
-                    if(html.msg == "username or password not correct")
+                    if(html.msg == -4 || html.msg == -5)
                         msg = "Username o password non corretti";
                     else
                         msg = "Qualcosa è andato storto...";
@@ -196,43 +194,42 @@ class App extends Component{
                 }
             }
         );
-        */
-  
     }
 
     handleSignup = (user, password) => {
-        this.setState({user, page: "home"}, () => { this.getItems() });
+        //this.setState({user, page: "home"}, () => { this.getItems() });
 
         //console.log("login (" + user + ", " + password + ")");
         
-        /*
+        
         if(user == "" || password == ""){
             this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
     
         let json_msg = {"user": user, "passw": password, "type": "signup"};
-        let url = this.state.serverIp + this.state.serverPort + "/backend/login.php";
+        let url = this.state.serverUrl + "login.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
             method : "POST",
             headers: {
-            'Content-type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
             },
             body : msg
         }).then(
             response => response.json()
         ).then(
             html => {
+                
                 if (html.status == "SUCCESS") {
-                    //console.log("signup success");
+                    console.log("signup success");
                     this.openAlert("SUCCESS", "Registrazione avvenuta con successo", infoAlert);
                 }
                 else {
                     console.error(html.msg);
                     let msg = "";
-                    if(html.msg == "Username already exists")
+                    if(html.msg == -4)
                         msg = "Username già in uso";
                     else
                         msg = "Qualcosa è andato storto...";
@@ -241,7 +238,6 @@ class App extends Component{
                 }      
             }
         );
-        */
     }
 
     // ------------------- NAVBAR EVENTS ------------------------
