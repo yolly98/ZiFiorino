@@ -55,26 +55,11 @@ class App extends Component{
 
     getItems(){
 
-        // Test
-        /*
-        let items = [];
-        for(let i = 0; i < 20; i++){
-            items.push(
-                {
-                    id: i,
-                    name: 'sito' + i,
-                    image: defaultWebSite,
-                    display: "flex"
-                }
-            )
-        }
-        this.setState({items})
-        */
-        // ---
         let token = this.state.token;
         let json_msg = {"token": token, "type": "get-items"};
         let url = this.state.serverUrl + "get-items.php";
         let msg = "body=" + JSON.stringify(json_msg);
+        
         fetch(url, {
             method : "POST",
             headers: {
@@ -179,7 +164,6 @@ class App extends Component{
             html => {
                 if (html.status == "SUCCESS") {
                     let token =  html.token;
-                    console.log(token);
                     this.setState(
                         {user, token},
                         () => {this.getItems()}
@@ -333,11 +317,41 @@ class App extends Component{
     // ----------------------- ITEM EVENTS -----------------------
 
     handleOpenItem = item => {
-        this.setState({itemMenu: this.state.items.indexOf(item)},
-        () => {
-            document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-            document.getElementById('item-blocker').style.display = 'block';
-        });
+
+        let token = this.state.token;
+        let json_msg = {"token": token, "id": item.id, "type": "get-item-data"};
+        let url = this.state.serverUrl + "get-item-data.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    
+                    let item_body = JSON.parse(html.item);
+                    item.username = item_body.username;
+                    item.password = item_body.password;
+                    item.notes = item_body.notes;
+                    this.setState({
+                        itemMenu: this.state.items.indexOf(item)},
+                        () => {
+                            document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+                            document.getElementById('item-blocker').style.display = 'block';
+                    });
+                    
+                } else {
+                    console.error(html.msg);
+                    this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                }
+            }
+        );
     }
 
     handleCloseItem = () => {
@@ -368,12 +382,6 @@ class App extends Component{
         if(!item.hasOwnProperty("id")){
             isNewItem = true;
             id = 0;
-        /*    let maxId = 0;
-            for(let _item of items)
-                if(_item.id > maxId)
-                    maxId = _item.id;
-            item.id = maxId + 1;
-        */
         }
         else
             id = item.id;
@@ -384,32 +392,7 @@ class App extends Component{
         item_db.urlImage = image;
         item_db.notes = notes;
         item_db.id = id;
-        /*
-        let items = [...this.state.items];
-        if(items.length == 0)
-            items.push(item);
-        for(let i = 0; i < items.length; i++){
-            if(items[i].id == item.id){
-                items[i] = item;
-                break;
-            }
-            if(i == items.length - 1)
-                items.push(item);
-        }
-        
-        // Test
-        this.setState(
-            {itemMenu: -1, items},
-            function(){
-                this.openAlert("SUCCESS", "Salvataggio avvenuto con successo", infoAlert);
-                document.getElementsByTagName('body')[0].style.overflow = 'auto';
-                document.getElementById('item-blocker').style.display = 'none';
-            }
-          );
-        */
-        // ---
-        
-        //html request
+       
         let json_msg = {};
         json_msg.token = this.state.token;
         json_msg.item = item_db;
@@ -417,9 +400,10 @@ class App extends Component{
           json_msg.type = "new";
         else
           json_msg.type = "update";
-        console.log(json_msg);
+
         let url = this.state.serverUrl + "new-update-item.php";
         let msg = "body=" + JSON.stringify(json_msg);
+
         fetch(url, {
             method : "POST",
             headers: {
@@ -432,6 +416,10 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
+
+                    item.name = name;
+                    item.image = image;
+
                     if(isNewItem)
                         item.id = Number(html.id);
 
@@ -451,6 +439,8 @@ class App extends Component{
                         {itemMenu: -1, items},
                         function(){
                             this.openAlert("SUCCESS", "Salvataggio avvenuto con successo", infoAlert);
+                            document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                            document.getElementById('item-blocker').style.display = 'none';
                         }
                     );
                     document.getElementsByTagName('body')[0].style.overflow = 'auto';

@@ -3,10 +3,10 @@
 require 'config.php';    
 
 $body = json_decode($_POST['body']);
-$user = test($body->user);
-$passw = test($body->passw);
+$user = $body->user;
+$passw = $body->passw;
 
-if($user == "" || $passw == ""){
+if($user == "" || $passw == "" || $user == null || $passw == null){
     $response = [
         "status" => "ERROR",
         "msg" => -1
@@ -36,7 +36,7 @@ if(!$conn->query($sql)){
     return;
 }
 
-if(test($body->type) == 'login'){
+if($body->type == 'login'){
 
     // check if username exits
     $sql = "SELECT* FROM USER WHERE user LIKE BINARY ?";
@@ -83,7 +83,7 @@ if(test($body->type) == 'login'){
     
 }
 
-if(test($body->type) == 'signup'){
+if($body->type == 'signup'){
 
     $sql = "SELECT* FROM USER WHERE user LIKE BINARY ?";
     $stmt = $conn->prepare($sql);
@@ -114,14 +114,6 @@ if(test($body->type) == 'signup'){
 
     $conn->close();
 
-}
-
-function test($data){
-
-    $data=trim($data);
-    $data=stripslashes($data);
-    $data=htmlspecialchars($data);
-    return $data;
 }
 
 ?>

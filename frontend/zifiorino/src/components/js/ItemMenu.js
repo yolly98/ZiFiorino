@@ -21,13 +21,11 @@ class ItemMenu extends Component{
 
         if(!this.state.item.hasOwnProperty("name"))
             return;
-        
-        // TODO request to server
 
         let name = this.state.item.name;
-        let username = "test-username";
-        let password = "test-password";
-        let notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+        let username = this.state.item.username;
+        let password = this.state.item.password;
+        let notes = this.state.item.notes;
         let image = this.state.item.image;
 
         document.getElementById("itemMenu-input-name").value = name;

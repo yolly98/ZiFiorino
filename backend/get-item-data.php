@@ -4,9 +4,10 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
+    $id = $body->id;
     $username = "";
 
-    if($token == null){
+    if($token == null || $id == null){
         $response = [
             "status" => "ERROR",
             "msg" => -1
@@ -15,7 +16,7 @@
         return;
     }
 
-    if($body->type != "get-items"){
+    if($body->type != "get-item-data"){
         $response = [
             "status" => "ERROR",
             "msg" => -2
@@ -74,34 +75,34 @@
         return;
     }
 
-    $sql = "SELECT* from ITEM where user LIKE BINARY ?;";
+    $sql = "SELECT* from ITEM where id LIKE BINARY ?;";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
+    $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $array_data = array();
+    $encrypted_body;
+    $iv;
+
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            
-            $newItem = array(
-                "id" => $row['id'],
-                "name" => $row['name'],
-                "urlImage" => $row['urlImage']
-            );
-            array_push($array_data, $newItem);
+            $encrypted_body = hex2bin($row['body']);
+            $iv = hex2bin($row['iv']);
+            break;
         }
+
+        $body = decrypt($iv, $encrypted_body, $decoded_token->password);
         $response = [
             "status" => "SUCCESS",
-            "items" => json_encode($array_data)
+            "item" => $body
         ];
         echo json_encode($response);
     }
     else{
         $response = [
-            "status" => "SUCCESS",
-            "items" => json_encode(array())
+            "status" => "ERROR",
+            "msg" => -6
         ];
         echo json_encode($response);
     }
