@@ -5,28 +5,40 @@
     $body = json_decode($_POST['body']);
     $token = test($body->token);
     $username = "";
-    $id = null;
-    $item = "";
+    $password = "";
+    $item = $body->item;
+    $id = $item->id;
 
     // Verify and decode the token
     try {
-        $decoded = JWT::decode($jwt, $secret_key, array('HS256'));
+        $decoded = verify_token($token, $JWT_KEY);
         $username = $decoded->username;
-        $id = $decode->id;
-        $item = test($decode->item);
+        $password = $decoded->password;
     } catch (Exception $e) {
-        echo '{"status": "ERROR", "msg": "lost session"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -1
+        ];
+        echo json_encode($response);
         return;
     }
 
-
     $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
     if(!$conn){
-        echo '{"status": "ERROR", "msg": "connection failed to mysql:'.$conn->connect_error.'"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -2
+        ];
+        echo json_encode($response);
+        return;
     }    
     $sql = "USE ".$NAME_DB.";";
     if(!$conn->query($sql)){
-        echo '{"status": "ERROR", "msg": "connection failed to db"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -3
+        ];
+        echo json_encode($response);
         $conn->close();
         return;
     }
@@ -34,32 +46,66 @@
     // check if username exists
     $sql = "SELECT*from USER WHERE user LIKE BINARY ?;";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss",$user,$passw);
+    $stmt->bind_param("s",$username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if($result->num_rows<=0){
-        echo '{"status": "ERROR", "msg": "something went wrong"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -4
+        ];
+        echo json_encode($response);
         $conn->close();
         return;
     }
 
-    if(test($body->type) == "new"){
+    // +----+------+------+----------+----+------+
+    // | id | user | name | urlImage | iv | body |
+    // +----+------+------+----------+----+------+
+
+    $name = $item->name;
+    $urlImage = $item->urlImage;
+    $body = [
+        "username" => $item->username,
+        "password" => $item->password,
+        "notes" => $item->notes
+    ];
+    $body = json_encode($body);
+    $key = generate_hash($password);
+    $iv = generate_iv();
+    $encrypted_body = encrypt($iv, $body, $key);
+
+    if($body->type == "new"){
 
         //save new item
-        $sql = "INSERT INTO ITEM VALUES(0, ?, ?);";
+        $sql = "INSERT INTO ITEM VALUES(0, ?, ?, ?, ?, ?);";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $username, $item);
+        $stmt->bind_param("sssss", $username, $name, $urlImage, bin2hex($iv), bin2hex($encrypted_body));
         $stmt->execute();
 
+        // TODO si rompe qui
+        $response = [
+            "status" => "ERROR",
+            "msg" => -10
+        ];
+        echo json_encode($response);
+        $conn->close();
+        return;
+
+    
         //get the id assigned to the item
         $sql = "SELECT id from ITEM WHERE user LIKE BINARY ? ORDER BY id DESC LIMIT 1;";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s",$username);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
         if($result->num_rows <= 0){
-            echo '{"status": "ERROR", "msg": "something went wrong"}';
+            $response = [
+                "status" => "ERROR",
+                "msg" => -5
+            ];
+            echo json_encode($response);
             $conn->close();
             return;
         }
@@ -68,17 +114,24 @@
                 $id = $row['id'];
             }
 
-        echo '{"status": "SUCCESS", "id": '.$id.'}';
+        $response = [
+            "status" => "SUCCESS",
+            "id" => $id
+        ];
+        echo json_encode($response);
     }
     else{
 
         //update the item
-        $sql="UPDATE ITEM SET item=? WHERE id LIKE BINARY ?";
+        $sql="UPDATE ITEM SET name = ?, urlImage = ?, iv = ?, body = ? WHERE id LIKE BINARY ?";
         $stmt=$conn->prepare($sql);
-        $stmt->bind_param("si",$item, $id);
+        $stmt->bind_param("ssssi",$name, $urlImage, $iv, $encrypted_body);
         $stmt->execute();
         
-        echo '{"status": "SUCCESS"}';
+        $response = [
+            "status" => "SUCCESS"
+        ];
+        echo json_encode($response);
     }
 
 

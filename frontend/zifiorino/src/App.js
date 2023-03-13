@@ -56,6 +56,7 @@ class App extends Component{
     getItems(){
 
         // Test
+        /*
         let items = [];
         for(let i = 0; i < 20; i++){
             items.push(
@@ -68,13 +69,11 @@ class App extends Component{
             )
         }
         this.setState({items})
-
+        */
         // ---
-        /*
-        let user = this.state.user;
         let token = this.state.token;
         let json_msg = {"token": token, "type": "get-items"};
-        let url = this.state.serverIp + this.state.serverPort + "/backend/get-items.php";
+        let url = this.state.serverUrl + "get-items.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
             method : "POST",
@@ -88,20 +87,22 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
-                    let _items = html.msg;
+                    let _items = JSON.parse(html.items);
                     let items = [];
-                    //console.log(items);
                     for(let i = 0; i < _items.length; i++){
                         let id = _items[i].id;
-                        let item = _items[i].item.json();
+                        let name = _items[i].name;
+                        let url = _items[i].urlImage;
                         items.push(
                             {
                                 id: id, 
-                                item: item
+                                name: name,
+                                image: url,
+                                display: "flex"
                             }
                         );
                     }
-                    this.setState({login: false, _items});
+                    this.setState({page: 'home', items});
                     //console.log(items);
                 } else {
                     console.error(html.msg);
@@ -109,7 +110,7 @@ class App extends Component{
                 }
             }
         );
-        */
+        
     }
 
     // ---------------------- ALERT EVENTS -----------------------
@@ -180,7 +181,7 @@ class App extends Component{
                     let token =  html.token;
                     console.log(token);
                     this.setState(
-                        {user, token, page: "home"},
+                        {user, token},
                         () => {this.getItems()}
                         );
                 } else {
@@ -268,7 +269,7 @@ class App extends Component{
 
     // ------------------ RAPID BUTTONS EVENT ------------------
 
-    handleAddCard(){
+    handleAddItem(){
         this.setState({itemMenu: -2});
         document.getElementsByTagName('body')[0].style.overflow = 'hidden';
         document.getElementById('item-blocker').style.display = 'block';
@@ -348,28 +349,43 @@ class App extends Component{
     }
 
     handleSaveItem = state => {
+
+
+        let name = document.getElementById("itemMenu-input-name").value;
+        let username = document.getElementById("itemMenu-input-username").value;
+        let password = document.getElementById("itemMenu-input-password").value;
+        let image = document.getElementById("itemMenu-input-url").value;
+        let notes = document.getElementById("itemMenu-input-notes").value;
+        let id;
+
+        if(image == "")
+            image = defaultWebSite;
         
         let item = state.item;
+        let item_db = {};
         let isNewItem = false;
-        let items = [...this.state.items];
-
+        
         if(!item.hasOwnProperty("id")){
             isNewItem = true;
-            // item.id = -3;
-            let maxId = 0;
+            id = 0;
+        /*    let maxId = 0;
             for(let _item of items)
                 if(_item.id > maxId)
                     maxId = _item.id;
             item.id = maxId + 1;
+        */
         }
-        
-        item.name = document.getElementById("itemMenu-input-name").value;
-        item.image = document.getElementById("itemMenu-input-url").value;
-        if(item.image == "")
-            item.image = defaultWebSite;
+        else
+            id = item.id;
 
-        console.log(item);
-        
+        item_db.name = name;
+        item_db.username = username;
+        item_db.password = password;
+        item_db.urlImage = image;
+        item_db.notes = notes;
+        item_db.id = id;
+        /*
+        let items = [...this.state.items];
         if(items.length == 0)
             items.push(item);
         for(let i = 0; i < items.length; i++){
@@ -390,20 +406,19 @@ class App extends Component{
                 document.getElementById('item-blocker').style.display = 'none';
             }
           );
-        
+        */
         // ---
-        /*
+        
         //html request
-        //console.log(item_db);
         let json_msg = {};
         json_msg.token = this.state.token;
-        json_msg.item = item;
+        json_msg.item = item_db;
         if(isNewItem)
           json_msg.type = "new";
         else
           json_msg.type = "update";
-        //console.log(json_msg);
-        let url = this.state.serverIp + this.state.serverPort +"/backend/newUpdateItem.php";
+        console.log(json_msg);
+        let url = this.state.serverUrl + "new-update-item.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
             method : "POST",
@@ -417,9 +432,21 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
-                  if(isNewItem)
-                    items[items.length - 1].id = Number(html.id);
-                    //console.log(cards);
+                    if(isNewItem)
+                        item.id = Number(html.id);
+
+                    let items = [...this.state.items];
+                    if(items.length == 0)
+                        items.push(item);
+                    for(let i = 0; i < items.length; i++){
+                        if(items[i].id == item.id){
+                            items[i] = item;
+                            break;
+                        }
+                        if(i == items.length - 1)
+                            items.push(item);
+                    }
+
                     this.setState(
                         {itemMenu: -1, items},
                         function(){
@@ -429,12 +456,11 @@ class App extends Component{
                     document.getElementsByTagName('body')[0].style.overflow = 'auto';
                     document.getElementById('blocker1').style.display = 'none'; 
                 } else {
-                    // console.error(html.msg);
+                    console.error(html.msg);
                     this.openAlert("ERROR", "Salvataggio fallito", infoAlert);
                 }
             }
         );
-        */
     }
 
     handleDeleteItem = item => {
@@ -671,7 +697,7 @@ class App extends Component{
                         onExit = {this.handleExit}
                         onSearch = {this.handleSearch}
                     />
-                    <img id="add-item" src={add} onClick={() => this.handleAddCard()} />
+                    <img id="add-item" src={add} onClick={() => this.handleAddItem()} />
                     <img id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
                     <img id="open-backup" src={backup} onClick={() => this.handleOpenBackupMenu()} />
                     <img id="change-passw" src={changePassw} onClick={() => this.handleChangePassw()} />

@@ -1,22 +1,30 @@
 <?php
 
-    include('config.php');
+    require 'config.php';
 
     $body = json_decode($_POST['body']);
     $token = test($body->token);
     $username = "";
 
     if(test($body->type) != "get-items"){
-        echo '{"status": "ERROR", "msg": "something went wrong"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -1
+        ];
+        echo json_encode($response);
         return;
     }
 
     // Verify and decode the token
     try {
-        $decoded = JWT::decode($jwt, $secret_key, array('HS256'));
+        $decoded = verify_token($token, $JWT_KEY);
         $username = test($decoded->username);
     } catch (Exception $e) {
-        echo '{"status": "ERROR", "msg": "lost session"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -2
+        ];
+        echo json_encode($response);
         return;
     }
 
@@ -26,21 +34,29 @@
     }    
     $sql = "USE ".$NAME_DB.";";
     if(!$conn->query($sql)){
-        echo '{"status": "ERROR", "msg": "connection failed to db"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -3
+        ];
+        echo json_encode($response);
         $conn->close();
         return;
     }
 
 
     // check if username exists
-    $sql = "SELECT*from USER WHERE user LIKE BINARY ?;";
+    $sql = "SELECT* from USER WHERE user LIKE BINARY ?;";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $user, $passw);
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if($result->num_rows <= 0){
-        echo '{"status": "ERROR", "msg": "something went wrong"}';
+        $response = [
+            "status" => "ERROR",
+            "msg" => -4
+        ];
+        echo json_encode($response);
         $conn->close();
         return;
     }
@@ -58,15 +74,34 @@
             
             $newItem = array(
                 "id" => $row['id'],
-                "item" => $row['item']
+                "name" => $row['name'],
+                "urlImage" => $row['urlImage']
             );
             array_push($array_data, $newItem);
         }
-        echo '{"status": "SUCCESS", "msg": '.json_encode($array_data).'}';
+        $response = [
+            "status" => "SUCCESS",
+            "items" => json_encode($array_data)
+        ];
+        echo json_encode($response);
     }
-    else
-        echo '{"status": "SUCCESS", "msg": '.json_encode(array()).'}';
+    else{
+        $response = [
+            "status" => "SUCCESS",
+            "items" => json_encode(array())
+        ];
+        echo json_encode($response);
+    }
 
     $conn->close(); 
+
+
+    function test($data){
+
+        $data=trim($data);
+        $data=stripslashes($data);
+        $data=htmlspecialchars($data);
+        return $data;
+    }
 
 ?>
