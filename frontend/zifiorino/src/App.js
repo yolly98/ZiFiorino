@@ -59,7 +59,7 @@ class App extends Component{
         let json_msg = {"token": token, "type": "get-items"};
         let url = this.state.serverUrl + "get-items.php";
         let msg = "body=" + JSON.stringify(json_msg);
-        
+
         fetch(url, {
             method : "POST",
             headers: {
@@ -443,8 +443,6 @@ class App extends Component{
                             document.getElementById('item-blocker').style.display = 'none';
                         }
                     );
-                    document.getElementsByTagName('body')[0].style.overflow = 'auto';
-                    document.getElementById('blocker1').style.display = 'none'; 
                 } else {
                     console.error(html.msg);
                     this.openAlert("ERROR", "Salvataggio fallito", infoAlert);
