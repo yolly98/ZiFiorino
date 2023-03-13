@@ -319,7 +319,10 @@ class App extends Component{
     handleOpenItem = item => {
 
         let token = this.state.token;
-        let json_msg = {"token": token, "id": item.id, "type": "get-item-data"};
+        let json_msg = {};
+        json_msg.token = token;
+        json_msg.id = item.id;
+        json_msg.type = "get-item-data";
         let url = this.state.serverUrl + "get-item-data.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
@@ -452,6 +455,7 @@ class App extends Component{
     }
 
     handleDeleteItem = item => {
+       
         this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item, this.handleCloseAlert, this.deleteItem);   
         if(this.state.itemMenu > -1){
             this.setState({itemMenu: -1}, 
@@ -466,26 +470,13 @@ class App extends Component{
         
         let item = this.state.alert.optionalObject;
 
-        // Test
-        let items = [...this.state.items];
-        items.splice(items.indexOf(item),1);
-        this.setState(
-          {items},
-          function(){
-            this.handleCloseAlert();
-          }
-        );
-
-        // ---
-        /*
-        //console.log("delete button pressed [" + card.name + "]");
-        //html request
         let json_msg = {};
         json_msg.token = this.state.token;
-        json_msg.id = card.id;
-        //console.log(json_msg);
-        let url = this.state.serverIp + this.state.serverPort + "/backend/removeItem.php";
+        json_msg.id = item.id;
+        json_msg.type = "remove-item";
+        let url = this.state.serverUrl + "remove-item.php";
         let msg = "body=" + JSON.stringify(json_msg);
+
         fetch(url, {
             method : "POST",
             headers: {
@@ -498,21 +489,21 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
+
                     let items = [...this.state.items];
                     items.splice(items.indexOf(item), 1);
                     this.setState(
                         {items},
                         function(){
-                            this.openAlert("SUCCESS", (item.name + " rimosso!"), infoAlert);
+                            this.handleCloseAlert();
                         }
                     );
                 } else {
-                    // console.error(html.msg);
+                    console.error(html.msg);
                     this.openAlert("ERROR", ("Rimozione di " + item.name + " fallita"), errorAlert);
                 }
             }
         );
-        */
     }
 
     // ----------------------- PASSW MENU EVENTS -----------------------
@@ -629,6 +620,7 @@ class App extends Component{
               itemMenu = <ItemMenu
                             onCancel = {this.handleCloseItem} 
                             onSave = {this.handleSaveItem} 
+                            onRemove = {this.handleCloseItem}
                             item = {{}} 
                           />
             }
