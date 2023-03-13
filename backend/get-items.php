@@ -4,7 +4,6 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
-    $username = "";
 
     if($token == null){
         $response = [
@@ -15,16 +14,7 @@
         return;
     }
 
-    if($body->type != "get-items"){
-        $response = [
-            "status" => "ERROR",
-            "msg" => -2
-        ];
-        echo json_encode($response);
-        return;
-    }
-
-    // Verify and decode the token
+    // verify and decode the token
     $decoded_token = verify_token($token, $JWT_KEY);
     if($decoded_token == null){
         $response = [
@@ -37,6 +27,7 @@
 
     $username = $decoded_token->username;
   
+    // create mysql connection
     $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
     if(!$conn){
         $response = [
@@ -46,7 +37,7 @@
         echo json_encode($response);
         return;
     }    
-    $sql = "USE ".$NAME_DB.";";
+    $sql = "USE " . $NAME_DB . ";";
     if(!$conn->query($sql)){
         $response = [
             "status" => "ERROR",
@@ -57,25 +48,8 @@
         return;
     }
 
-    // check if username exists
-    $sql = "SELECT* from USER WHERE user LIKE BINARY ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if($result->num_rows <= 0){
-        $response = [
-            "status" => "ERROR",
-            "msg" => -6
-        ];
-        echo json_encode($response);
-        $conn->close();
-        return;
-    }
-
-    $sql = "SELECT* from ITEM where user LIKE BINARY ?;";
-
+    // get all items of the user from database
+    $sql = "SELECT* FROM ITEM WHERE user LIKE BINARY ?;";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();

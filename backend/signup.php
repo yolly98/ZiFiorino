@@ -37,43 +37,31 @@ if(!$conn->query($sql)){
     return;
 }
 
-// check if username exits
+// check if user already exists
 $sql = "SELECT* FROM USER WHERE user LIKE BINARY ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $user);
+$stmt->bind_param("s",$user);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if($result->num_rows > 0){
+if($result->num_rows == 0){
 
-    // check if password is correct
-    while($row = $result->fetch_assoc()){
-        $hashedPassw = $row['passw'];
-        if(verify_hash($passw, $hashedPassw)){
-            // generate token
-            $expiration_time = 30; // minutes
-            $passw = generate_hash($passw);
-            $token = generate_token($user, $passw, $expiration_time, $JWT_KEY);
+    // save new user in the database
+    $sql="INSERT INTO USER VALUES(?, ?)";
+    $stmt = $conn->prepare($sql);
+    $passw = generate_hash_with_salt($passw);
+    $stmt->bind_param("ss",$user, $passw);
+    $stmt->execute();
 
-            $response = [
-                "status" => "SUCCESS",
-                "token" => $token
-            ];
-            echo json_encode($response);
-        }
-        else{
-            $response = [
-                "status" => "ERROR",
-                "msg" => -4
-            ];
-            echo json_encode($response);
-        }
-    }
+    $response = [
+        "status" => "SUCCESS"
+    ];
+    echo json_encode($response);
 }
 else{
     $response = [
         "status" => "ERROR",
-        "msg" => -5
+        "msg" => -4
     ];
     echo json_encode($response);
 }

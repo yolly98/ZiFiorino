@@ -56,7 +56,8 @@ class App extends Component{
     getItems(){
 
         let token = this.state.token;
-        let json_msg = {"token": token, "type": "get-items"};
+        let json_msg = {};
+        json_msg.token = token;
         let url = this.state.serverUrl + "get-items.php";
         let msg = "body=" + JSON.stringify(json_msg);
 
@@ -141,14 +142,14 @@ class App extends Component{
 
     handleLogin = (user, password) =>{
 
-        //console.log("login (" + user + ", " + password + ")");
-        
         if(user == "" || password == ""){
             this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
     
-        let json_msg = {"user": user, "passw": password, "type": "login"};
+        let json_msg = {};
+        json_msg.user = user;
+        json_msg.passw = password;
         let url = this.state.serverUrl + "login.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
@@ -182,18 +183,16 @@ class App extends Component{
     }
 
     handleSignup = (user, password) => {
-        //this.setState({user, page: "home"}, () => { this.getItems() });
-
-        //console.log("login (" + user + ", " + password + ")");
-        
         
         if(user == "" || password == ""){
             this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
     
-        let json_msg = {"user": user, "passw": password, "type": "signup"};
-        let url = this.state.serverUrl + "login.php";
+        let json_msg = {};
+        json_msg.user = user;
+        json_msg.passw = password;
+        let url = this.state.serverUrl + "signup.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
             method : "POST",
@@ -322,7 +321,6 @@ class App extends Component{
         let json_msg = {};
         json_msg.token = token;
         json_msg.id = item.id;
-        json_msg.type = "get-item-data";
         let url = this.state.serverUrl + "get-item-data.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
@@ -397,14 +395,14 @@ class App extends Component{
         item_db.id = id;
        
         let json_msg = {};
+        let url = this.state.serverUrl
         json_msg.token = this.state.token;
         json_msg.item = item_db;
         if(isNewItem)
-          json_msg.type = "new";
+            url += "add-item.php";
         else
-          json_msg.type = "update";
-
-        let url = this.state.serverUrl + "new-update-item.php";
+            url += "update-item.php";
+        
         let msg = "body=" + JSON.stringify(json_msg);
 
         fetch(url, {
@@ -473,7 +471,6 @@ class App extends Component{
         let json_msg = {};
         json_msg.token = this.state.token;
         json_msg.id = item.id;
-        json_msg.type = "remove-item";
         let url = this.state.serverUrl + "remove-item.php";
         let msg = "body=" + JSON.stringify(json_msg);
 

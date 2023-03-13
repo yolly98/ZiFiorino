@@ -4,12 +4,13 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
-    $item_id = $body->id;
+    $item = $body->item;
+    $id = $item->id;
 
-    if($token == null || $item_id == null){
+    if($token == null || $item == null){
         $response = [
             "status" => "ERROR",
-            "msg" => -2
+            "msg" => -1
         ];
         echo json_encode($response);
         return;
@@ -20,19 +21,21 @@
     if($decoded_token == null){
         $response = [
             "status" => "ERROR",
-            "msg" => -3
+            "msg" => -2
         ];
         echo json_encode($response);
         return;
     }
+    
     $username = $decoded_token->username;
+    $password = $decoded_token->password;
 
     // create mysql connection
     $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
     if(!$conn){
         $response = [
             "status" => "ERROR",
-            "msg" => -4
+            "msg" => -3
         ];
         echo json_encode($response);
         return;
@@ -41,38 +44,36 @@
     if(!$conn->query($sql)){
         $response = [
             "status" => "ERROR",
-            "msg" => -5
+            "msg" => -4
         ];
         echo json_encode($response);
         $conn->close();
         return;
     }
 
-    //remove the item
-    $sql = "DELETE FROM ITEM WHERE id LIKE BINARY ? AND user LIKE BINARY ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $item_id, $username);
-    $stmt->execute();
+    // prepare the item
+    $name = $item->name;
+    $urlImage = $item->urlImage;
+    $body = [
+        "username" => $item->username,
+        "password" => $item->password,
+        "notes" => $item->notes
+    ];
+    $body = json_encode($body);
+    $key = $password;
+    $iv = generate_iv();
+    $encrypted_body = encrypt($iv, $body, $key);
 
-    //check if the item exists
-    $sql = "SELECT * from ITEM WHERE id LIKE BINARY ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $item_id);
+    //update the item
+    $sql="UPDATE ITEM SET name = ?, urlImage = ?, iv = ?, body = ? WHERE id LIKE BINARY ? AND user LIKE BINARY ?";
+    $stmt=$conn->prepare($sql);
+    $stmt->bind_param("ssssis", $name, $urlImage, bin2hex($iv), bin2hex($encrypted_body), $item->id, $username);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if($result->num_rows > 0){
-        $response = [
-            "status" => "ERROR",
-            "msg" => -6
-        ];
-        echo json_encode($response);
-    }
-    else{
-        $response = [
-            "status" => "SUCCESS"
-        ];
-        echo json_encode($response);
-    }
+    
+    $response = [
+        "status" => "SUCCESS"
+    ];
+    echo json_encode($response);
 
     $conn->close();
 
