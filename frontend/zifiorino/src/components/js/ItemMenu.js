@@ -52,6 +52,7 @@ class ItemMenu extends Component{
         passw.setSelectionRange(0,99999);//needed for mobile devices
         document.execCommand("copy");
         passw.type='password';
+        document.getElementById("itemMenu-copy-tooltip-label").innerText = "Copiato";
     }
 
     showPassw(){
@@ -81,7 +82,7 @@ class ItemMenu extends Component{
                             <input className="itemMenu-text" id="itemMenu-input-password" type="password"/>
                             <img id="itemMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw()} onMouseUp={() => this.showPassw()}></img>
                             <img id="itemMenu-copy" src={copy} onClick={() => this.copy()}></img>
-                            <div id="itemMenu-copy-tooltip"><label>Copia</label></div>
+                            <div id="itemMenu-copy-tooltip"><label id="itemMenu-copy-tooltip-label">Copia</label></div>
                         </div>
                         <label className='itemMenu-label'>Url Icona</label>
                         <input  className="itemMenu-text" id="itemMenu-input-url" type="text" style={{marginBottom: '1rem'}}/>

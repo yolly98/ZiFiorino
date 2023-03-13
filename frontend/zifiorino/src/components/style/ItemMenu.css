@@ -93,6 +93,13 @@
         height: 1.5rem;
         border-radius: 0.5rem;
         margin-left: 1rem;
+        width: 4rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    #itemMenu-copy-tooltip-label{
+        margin: 0;
     }
 
     #itemMenu-copy:hover + #itemMenu-copy-tooltip{

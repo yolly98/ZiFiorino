@@ -246,7 +246,7 @@ class App extends Component{
     
         }
 
-        document.getElementById("input-search").value = "";
+        // document.getElementById("input-search").value = "";
         this.setState({items});
     }
 

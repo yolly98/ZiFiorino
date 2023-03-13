@@ -25,7 +25,7 @@ class Navbar extends Component{
               <img id="img-exit" src={exit}  onClick={() => this.props.onExit()}/>
             </div>
             <div id="nav-container5">
-              <input id="input-search" type='text' />
+              <input id="input-search" type='text' onKeyUp={() => this.props.onSearch(document.getElementById('input-search').value)}/>
               <img id="img-search" src={search}  onClick={() => this.props.onSearch(document.getElementById('input-search').value)}/>
             </div>
           </div>
