@@ -79,7 +79,7 @@
     if($result->num_rows <= 0){
         $response = [
             "status" => "ERROR",
-            "msg" => -6
+            "msg" => -5
         ];
         echo json_encode($response);
         $conn->close();

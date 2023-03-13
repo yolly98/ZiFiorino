@@ -19,7 +19,7 @@
     if($decoded_token == null){
         $response = [
             "status" => "ERROR",
-            "msg" => -3
+            "msg" => -2
         ];
         echo json_encode($response);
         return;
@@ -32,7 +32,7 @@
     if(!$conn){
         $response = [
             "status" => "ERROR",
-            "msg" => -4
+            "msg" => -3
         ];
         echo json_encode($response);
         return;
@@ -41,7 +41,7 @@
     if(!$conn->query($sql)){
         $response = [
             "status" => "ERROR",
-            "msg" => -5
+            "msg" => -4
         ];
         echo json_encode($response);
         $conn->close();

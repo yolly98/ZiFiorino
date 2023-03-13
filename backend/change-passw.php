@@ -4,9 +4,9 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
-    $id = $body->id;
+    $new_passw = $body->password;
 
-    if($token == null || $id == null){
+    if($token == null || $new_passw == "" || $new_passw == null){
         $response = [
             "status" => "ERROR",
             "msg" => -1
@@ -27,6 +27,7 @@
     }
 
     $username = $decoded_token->username;
+    $old_passw = $decoded_token->password;
   
     // create mysql connection
     $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
@@ -49,37 +50,44 @@
         return;
     }
 
-    // get item from database
-    $sql = "SELECT* FROM ITEM WHERE id LIKE BINARY ? AND user LIKE BINARY ?;";
+    // get all items of the user from database
+    $sql = "SELECT* FROM ITEM WHERE user LIKE BINARY ?;";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $id, $username);
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $encrypted_body;
-    $iv;
-
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
+        
+            // encrypt item with the new passoword
+            $id = $row['id'];
             $encrypted_body = hex2bin($row['body']);
             $iv = hex2bin($row['iv']);
-            break;
+            $body = decrypt($iv, $encrypted_body, $old_passw);
+            $iv = generate_iv();
+            $encrypted_body = encrypt($iv, $body, generate_hash($new_passw));
+
+            //update the item
+            $sql="UPDATE ITEM SET iv = ?, body = ? WHERE id LIKE BINARY ? AND user LIKE BINARY ?";
+            $stmt=$conn->prepare($sql);
+            $stmt->bind_param("ssis", bin2hex($iv), bin2hex($encrypted_body), $id, $username);
+            $stmt->execute();
         }
 
-        $body = decrypt($iv, $encrypted_body, $decoded_token->password);
-        $response = [
-            "status" => "SUCCESS",
-            "item" => $body
-        ];
-        echo json_encode($response);
     }
-    else{
-        $response = [
-            "status" => "ERROR",
-            "msg" => -5
-        ];
-        echo json_encode($response);
-    }
+
+    //update password on user table
+    $sql="UPDATE USER SET passw = ? WHERE user LIKE BINARY ?";
+    $stmt=$conn->prepare($sql);
+    $stmt->bind_param("ss", generate_hash_with_salt($new_passw), $username);
+    $stmt->execute();
+
+    $response = [
+        "status" => "SUCCESS",
+        "items" => json_encode(array())
+    ];
+    echo json_encode($response);
 
     $conn->close(); 
 ?>

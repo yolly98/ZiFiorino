@@ -518,23 +518,19 @@ class App extends Component{
         
         let passw = document.getElementsByClassName("passwMenu-input")[0].value;
         let r_passw = document.getElementsByClassName("passwMenu-input")[1].value;
+        if(passw == "" || r_passw == ""){
+            this.openAlert("ERROR", "Le password non posso essere vuote", errorAlert);
+            return;
+        }
         if(passw != r_passw){
             this.openAlert("ERROR", "Le password inserite non sono uguali", errorAlert);
             return;
         }
         
-        // Test
-        this.setState({passwMenu: false},
-            () => {
-                document.getElementsByTagName('body')[0].style.overflow = 'auto';
-                document.getElementById('item-blocker').style.display = 'none';
-                this.openAlert("", "Password modificata con success", infoAlert);
-            });
-
-        // --
-        /*
-        let json_msg = {"token": this.state.token, "passw": passw};
-        let url = this.state.serverIp + this.state.serverPort + "/backend/change-passw.php";
+        let json_msg = {};
+        json_msg.token = this.state.token;
+        json_msg.password = passw;
+        let url = this.state.serverUrl + "change-passw.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
                 method : "POST",
@@ -548,18 +544,18 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
-                    //console.log("change password success");
-                    this.openAlert("SUCCESS", "Password aggiornata con successo", infoAlert);
+                    this.setState({passwMenu: false, page: 'login'},
+                        () => {
+                            document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                            this.openAlert("", "Password modificata con successo, verrai reindirizzato al login", infoAlert);
+                    });
                 }
                 else {
                     console.error(html.msg);
-                    let msg = "Qualcosa è andato storto...";
-                    this.openAlert("ERROR", msg, errorAlert);
+                    this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
-        */
-        
     }
 
     // ------------------------------------------------------

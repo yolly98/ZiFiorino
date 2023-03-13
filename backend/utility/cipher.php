@@ -14,12 +14,10 @@ function generate_iv(){
     return $iv;
 }
 
-
 function encrypt($iv, $plaintext, $key){
 
     return openssl_encrypt($plaintext, "aes-256-cbc", $key, 0, $iv);
 }
-
 
 function decrypt($iv, $ciphertext, $key){
 
