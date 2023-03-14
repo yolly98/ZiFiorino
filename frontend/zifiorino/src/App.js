@@ -307,6 +307,10 @@ class App extends Component{
                             }
                         );
                     }
+
+                    backups.sort(function(a, b) {
+                        return a.date - b.date;
+                      });
                     backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
@@ -392,7 +396,12 @@ class App extends Component{
                 if (html.status == "SUCCESS") {
 
                     let backupMenu = this.state.backupMenu;
-                    backupMenu.backups[backupMenu.backups.indexOf(backup)].date = new_date;
+                    let backups = this.state.backupMenu.backups;
+                    backups[backups.indexOf(backup)].date = new_date;
+                    backups.sort(function(a, b) {
+                        return a.date - b.date;
+                      });
+                    backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
                             this.openAlert("", "Nuovo backup creato con successo", infoAlert);
@@ -412,9 +421,41 @@ class App extends Component{
     }
 
     restoreBackup = () => {
-        let backup = this.state.alert.optionalObject;
-        console.log("restore backup of " + backup.date );
+
         this.handleCloseAlert();
+
+        let backup = this.state.alert.optionalObject;
+        let file_name = backup.date;
+        file_name = file_name.replace(/ /g, "!");
+        file_name = file_name.replace(/:/g, "_");
+        file_name = file_name + ".json";
+
+        let json_msg = {};
+        json_msg.token = this.state.token;
+        json_msg.file_name = file_name;
+        let url = this.state.serverUrl + "restore-backup.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+                method : "POST",
+                headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    this.handleRefresh();
+                    this.openAlert("", "I tuoi dati sono stati riportati allo stato del backup", infoAlert);
+                }
+                else {
+                    console.error(html.msg);
+                    this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                }      
+            }
+        );
     }
     
     // ----------------------- ITEM EVENTS -----------------------
