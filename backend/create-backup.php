@@ -4,9 +4,10 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
-    $file_name = $body->file_name;
+    $old_file_name = $body->old_file_name;
+    $new_file_name = $body->new_file_name;
 
-    if($token == null || $file_name == null){
+    if($token == null || $old_file_name == null || $new_file_name == null){
         $response = [
             "status" => "ERROR",
             "msg" => -1
@@ -29,8 +30,8 @@
     $username = $decoded_token->username;
 
     // remove old backup
-    $file_path = "data/" . generate_hash($username) . "/" . $file_name;
-    if($file_name != "new" && file_exists($file_path))
+    $file_path = "data/" . generate_hash($username) . "/" . $old_file_name;
+    if($old_file_name != "new" && file_exists($file_path))
         unlink($file_path);
   
     // create mysql connection
@@ -79,15 +80,13 @@
 
     // save backup in a json file
     $json = json_encode($array_data);
-    $file_name = date('Y-m-d,H_i_s') . '.json';
-    $file_path = "data/" . generate_hash($username) . "/" . $file_name;
+    $file_path = "data/" . generate_hash($username) . "/" . $new_file_name;
     if(file_exists($file_path))
         unlink($file_path);
     file_put_contents($file_path, $json);
 
     $response = [
-        "status" => "SUCCESS",
-        "backup" => $file_name
+        "status" => "SUCCESS"
     ];
     echo json_encode($response);
 

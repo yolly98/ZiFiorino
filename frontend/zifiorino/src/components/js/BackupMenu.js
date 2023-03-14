@@ -5,24 +5,23 @@ import cross from '../../images/delete.png';
 import create from '../../images/new.png';
 import restore from '../../images/restore.png';
 
-var MAX_NUMBER_OF_BACKUPS = 5;
-
 class BackupMenu extends Component{
 
     state = {
-        backups: []
+        backups: this.props.backups
     }
 
     componentDidMount(){
 
+        /*
         let _backups = this.props.backups;
         let backups = [];
         for(let i = 0; i < MAX_NUMBER_OF_BACKUPS; i++){
             let file_name = "Vuoto";
             if( i < _backups.length){
                 file_name = _backups[i];
+                file_name = file_name.replace(/!/g, " ");
                 file_name = file_name.replace(/_/g, ":");
-                file_name = file_name.replace(",", " ");
                 file_name = file_name.replace(".json", "");
             }
             backups.push(
@@ -32,7 +31,7 @@ class BackupMenu extends Component{
                 }
             );
         }
-        this.setState({backups})
+        this.setState({backups})*/
     }
 
     render(){

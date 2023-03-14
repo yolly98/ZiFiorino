@@ -40,6 +40,7 @@ class App extends Component{
         },
         backupMenu :{
             state: false,
+            max_number_of_backups: 5,
             backups: []
         },
         passwMenu: false
@@ -289,7 +290,24 @@ class App extends Component{
                     
                     let backupMenu = this.state.backupMenu;
                     backupMenu.state = true;
-                    backupMenu.backups = html.backups;
+                    let _backups = html.backups;
+                    let backups = [];
+                    for(let i = 0; i < this.state.backupMenu.max_number_of_backups; i++){
+                        let file_name = "Vuoto";
+                        if( i < _backups.length){
+                            file_name = _backups[i];
+                            file_name = file_name.replace(/!/g, " ");
+                            file_name = file_name.replace(/_/g, ":");
+                            file_name = file_name.replace(".json", "");
+                        }
+                        backups.push(
+                            {
+                                id: i,
+                                date: file_name
+                            }
+                        );
+                    }
+                    backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
                             document.getElementsByTagName('body')[0].style.overflow = 'hidden';
@@ -335,14 +353,29 @@ class App extends Component{
     }
 
     createNewBackup = () => {
-        let backup = this.state.alert.optionalObject;
-        console.log("created new backup (overwrite  " + backup.date + ")");
+
         this.handleCloseAlert();
-        /*
+
+        let backup = this.state.alert.optionalObject;
+        let old_file_name = backup.date;
+        if (backup.date != "Vuoto"){
+            old_file_name = old_file_name.replace(/ /g, "!");
+            old_file_name = old_file_name.replace(/:/g, "_");
+            old_file_name = old_file_name + ".json";
+        }
+        else
+            old_file_name = "new";
+        let new_file_name = (new Date()).toLocaleString();
+        new_file_name = new_file_name.replace(/\//g, "-");
+        let new_date = new_file_name;
+        new_file_name = new_file_name.replace(/ /g, "!");
+        new_file_name = new_file_name.replace(/:/g, "_");
+        new_file_name += ".json";
 
         let json_msg = {};
         json_msg.token = this.state.token;
-        json_msg.password = passw;
+        json_msg.old_file_name = old_file_name;
+        json_msg.new_file_name = new_file_name;
         let url = this.state.serverUrl + "create-backup.php";
         let msg = "body=" + JSON.stringify(json_msg);
         fetch(url, {
@@ -357,10 +390,12 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
-                    this.setState({passwMenu: false, page: 'login'},
+
+                    let backupMenu = this.state.backupMenu;
+                    backupMenu.backups[backupMenu.backups.indexOf(backup)].date = new_date;
+                    this.setState({backupMenu},
                         () => {
-                            document.getElementsByTagName('body')[0].style.overflow = 'auto';
-                            this.openAlert("", "Password modificata con successo, verrai reindirizzato al login", infoAlert);
+                            this.openAlert("", "Nuovo backup creato con successo", infoAlert);
                     });
                 }
                 else {
@@ -369,7 +404,6 @@ class App extends Component{
                 }      
             }
         );
-        */
     }
 
     handleRestoreFromBackup = backup => {
