@@ -27,7 +27,7 @@
 
     $username = $decoded_token->username;
     
-    // remove old backup
+    // get backup files
     $file_path = "data/" . generate_hash($username) . "/*";
     $files = glob($file_path);
     $file_names = array();

@@ -38,7 +38,10 @@ class App extends Component{
             onConfirm: null,
             optionalObject: null
         },
-        backupMenu: false,
+        backupMenu :{
+            state: false,
+            backups: []
+        },
         passwMenu: false
     }
 
@@ -265,11 +268,40 @@ class App extends Component{
     }
 
     handleOpenBackupMenu(){
-        this.setState({backupMenu: true},
-            () => {
-                document.getElementsByTagName('body')[0].style.overflow = 'hidden';
-                document.getElementById('item-blocker').style.display = 'block';
-            });
+
+        let token = this.state.token;
+        let json_msg = {};
+        json_msg.token = token;
+        let url = this.state.serverUrl + "get-backups.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+            method : "POST",
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    
+                    let backupMenu = this.state.backupMenu;
+                    backupMenu.state = true;
+                    backupMenu.backups = html.backups;
+                    this.setState({backupMenu},
+                        () => {
+                            document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+                            document.getElementById('item-blocker').style.display = 'block';
+                        });
+                    
+                } else {
+                    console.error(html.msg);
+                    this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                }
+            }
+        );
     }
 
     handleChangePassw(){
@@ -287,9 +319,14 @@ class App extends Component{
     // ------------------- BACKUPMENU EVENTS ---------------------
 
     handleCloseBackupMenu = () => {
-        this.setState({backupMenu: false});
-        document.getElementsByTagName('body')[0].style.overflow = 'auto';
-        document.getElementById('item-blocker').style.display = 'none';
+        let backupMenu = this.state.backupMenu;
+        backupMenu.state = false;
+        backupMenu.backups = [];
+        this.setState({backupMenu},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                document.getElementById('item-blocker').style.display = 'none';
+            });
     }
 
     handleNewBackup = backup => {
@@ -299,8 +336,40 @@ class App extends Component{
 
     createNewBackup = () => {
         let backup = this.state.alert.optionalObject;
-        console.log("create new backup (overwrite  " + backup.date + ")");
+        console.log("created new backup (overwrite  " + backup.date + ")");
         this.handleCloseAlert();
+        /*
+
+        let json_msg = {};
+        json_msg.token = this.state.token;
+        json_msg.password = passw;
+        let url = this.state.serverUrl + "create-backup.php";
+        let msg = "body=" + JSON.stringify(json_msg);
+        fetch(url, {
+                method : "POST",
+                headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body : msg
+        }).then(
+            response => response.json()
+        ).then(
+            html => {
+                if (html.status == "SUCCESS") {
+                    this.setState({passwMenu: false, page: 'login'},
+                        () => {
+                            document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                            this.openAlert("", "Password modificata con successo, verrai reindirizzato al login", infoAlert);
+                    });
+                }
+                else {
+                    console.error(html.msg);
+                    this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                }      
+            }
+        );
+        */
     }
 
     handleRestoreFromBackup = backup => {
@@ -621,8 +690,9 @@ class App extends Component{
             else
               itemMenu = <></>
 
-            if(this.state.backupMenu){
+            if(this.state.backupMenu.state){
                 backupMenu = <BackupMenu 
+                                backups = {this.state.backupMenu.backups}
                                 onCancel = {this.handleCloseBackupMenu}
                                 onNew = {this.handleNewBackup}
                                 onRestore = {this.handleRestoreFromBackup}
