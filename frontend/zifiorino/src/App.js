@@ -398,9 +398,6 @@ class App extends Component{
                     let backupMenu = this.state.backupMenu;
                     let backups = this.state.backupMenu.backups;
                     backups[backups.indexOf(backup)].date = new_date;
-                    backups.sort(function(a, b) {
-                        return a.date - b.date;
-                      });
                     backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
@@ -480,7 +477,7 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
-                    
+                    console.log(html.item);
                     let item_body = JSON.parse(html.item);
                     item.username = item_body.username;
                     item.password = item_body.password;
