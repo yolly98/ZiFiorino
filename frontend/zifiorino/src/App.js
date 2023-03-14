@@ -165,6 +165,7 @@ class App extends Component{
             html => {
                 if (html.status == "SUCCESS") {
                     let token =  html.token;
+                    console.log(token);
                     this.setState(
                         {user, token},
                         () => {this.getItems()}

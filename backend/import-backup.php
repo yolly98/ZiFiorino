@@ -4,8 +4,9 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
+    $file_name = $body->file_name;
 
-    if($token == null){
+    if($token == null || $file_name == null){
         $response = [
             "status" => "ERROR",
             "msg" => -1
@@ -26,6 +27,21 @@
     }
 
     $username = $decoded_token->username;
+
+    // check if the backup exists
+    $file_path = "data/" . generate_hash($username) . "/" . $file_name;
+    if(!file_exists($file_path)){
+        $response = [
+            "status" => "ERROR",
+            "msg" => -3
+        ];
+        echo json_encode($response);
+        return;
+    }
+
+    // read backup
+    $file_json = file_get_contents($file_path);
+    $data = json_decode($file_json);
   
     // create mysql connection
     $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
@@ -48,37 +64,32 @@
         return;
     }
 
-    // get all items of the user from database
-    $sql = "SELECT* FROM ITEM WHERE user LIKE BINARY ?;";
+    // delete all item of the user
+    $sql = "DELETE FROM ITEM WHERE user LIKE BINARY ?;";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    $result = $stmt->get_result();
 
-    $array_data = array();
-    if($result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
-            
-            $newItem = [
-                "id" => $row['id'],
-                "name" => $row['name'],
-                "urlImage" => $row['urlImage']
-            ];
-            array_push($array_data, $newItem);
-        }
-        $response = [
-            "status" => "SUCCESS",
-            "items" => json_encode($array_data)
-        ];
-        echo json_encode($response);
+    // import backup in the database
+    foreach($data as $item){
+        $id = $item->id;
+        $user = $item->user;
+        $name = $item->name;
+        $urlImage = $item->urlImage;
+        $iv = $item->iv;
+        $body = $item->body;
+
+        //restore item
+        $sql = "INSERT INTO ITEM VALUES(?, ?, ?, ?, ?, ?);";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isssss", $id, $user, $name, $urlImage, $iv, $body);
+        $stmt->execute();
     }
-    else{
-        $response = [
-            "status" => "SUCCESS",
-            "items" => json_encode(array())
-        ];
-        echo json_encode($response);
-    }
+
+    $response = [
+        "status" => "SUCCESS"
+    ];
+    echo json_encode($response);
 
     $conn->close(); 
 ?>

@@ -53,6 +53,11 @@ if($result->num_rows == 0){
     $stmt->bind_param("ss",$user, $passw);
     $stmt->execute();
 
+    //create user folder for backup
+    $folder_name = generate_hash($user);
+    if (!file_exists($folder_name))
+        mkdir('data/'.$folder_name);
+
     $response = [
         "status" => "SUCCESS"
     ];

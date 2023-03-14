@@ -4,8 +4,9 @@
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
+    $file_name = $body->file_name;
 
-    if($token == null){
+    if($token == null || $file_name == null){
         $response = [
             "status" => "ERROR",
             "msg" => -1
@@ -26,6 +27,11 @@
     }
 
     $username = $decoded_token->username;
+
+    // remove old backup
+    $file_path = "data/" . generate_hash($username) . "/" . $file_name;
+    if($file_name != "new" && file_exists($file_path))
+        unlink($file_path);
   
     // create mysql connection
     $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
@@ -58,27 +64,32 @@
     $array_data = array();
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            
-            $newItem = [
+        
+            $item = [
                 "id" => $row['id'],
+                "user" => $row['user'],
                 "name" => $row['name'],
-                "urlImage" => $row['urlImage']
+                "urlImage" => $row['urlImage'],
+                "iv" => $row['iv'],
+                "body" => $row['body']
             ];
-            array_push($array_data, $newItem);
+            array_push($array_data, $item);
         }
-        $response = [
-            "status" => "SUCCESS",
-            "items" => json_encode($array_data)
-        ];
-        echo json_encode($response);
     }
-    else{
-        $response = [
-            "status" => "SUCCESS",
-            "items" => json_encode(array())
-        ];
-        echo json_encode($response);
-    }
+
+    // save backup in a json file
+    $json = json_encode($array_data);
+    $file_name = date('Y-m-d,H_i_s') . '.json';
+    $file_path = "data/" . generate_hash($username) . "/" . $file_name;
+    if(file_exists($file_path))
+        unlink($file_path);
+    file_put_contents($file_path, $json);
+
+    $response = [
+        "status" => "SUCCESS",
+        "backup" => $file_name
+    ];
+    echo json_encode($response);
 
     $conn->close(); 
 ?>
