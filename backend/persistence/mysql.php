@@ -49,11 +49,14 @@ class MySql {
         if($result->num_rows == 0)
             return null;
         else{
-            $user = [
-                "username" => $row['user'],
-                "password" => $row['passw']
-            ];
-            return $user;
+            if($result->num_rows > 0)
+                while($row = $result->fetch_assoc()){
+                    $user = [
+                        "username" => $row['user'],
+                        "password" => $row['passw']
+                    ];
+                    return $user;
+                }
         }
     }
 
@@ -195,7 +198,6 @@ class MySql {
 
     // -------------- UPDATE -----------------
 
-
     public function update_user($user){
 
         if($this->conn == null)
@@ -223,7 +225,7 @@ class MySql {
         $stmt=$this->conn->prepare($sql);
         if(!$stmt) return false;
         
-        $stmt->bind_param("ssssis", $item['name'], $item['urlImage'], $item['iv'], $item['body'], $item['$id'], $item['user']);
+        $stmt->bind_param("ssssis", $item['name'], $item['urlImage'], $item['iv'], $item['body'], $item['id'], $item['user']);
         if(!$stmt) return false;
 
         $stmt->execute();
@@ -338,7 +340,6 @@ class MySql {
         
         return true;
     }
-
 
 }
 

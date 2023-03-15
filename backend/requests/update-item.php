@@ -1,11 +1,10 @@
 <?php
 
-    include('config.php');
+    include('../config.php');
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
     $item = $body->item;
-    $id = $item->id;
 
     if($token == null || $item == null){
         $response = [
@@ -30,28 +29,20 @@
     $username = $decoded_token->username;
     $password = $decoded_token->password;
 
-    // create mysql connection
-    $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
-    if(!$conn){
+    // open mysql connection
+    $mysql = new MySQL();
+    $res = $mysql->open_connection($IP_ADDR, $USER_DB, $PASSW_DB, $NAME_DB);
+    if(!$res){
         $response = [
             "status" => "ERROR",
             "msg" => -3
         ];
         echo json_encode($response);
         return;
-    }    
-    $sql = "USE " . $NAME_DB . ";";
-    if(!$conn->query($sql)){
-        $response = [
-            "status" => "ERROR",
-            "msg" => -4
-        ];
-        echo json_encode($response);
-        $conn->close();
-        return;
     }
 
     // prepare the item
+    $id = $item->id;
     $name = $item->name;
     $urlImage = $item->urlImage;
     $body = [
@@ -64,17 +55,31 @@
     $iv = generate_iv();
     $encrypted_body = encrypt($iv, $body, $key);
 
+    $item_db = [
+        'id' => $id,
+        'user' => $username,
+        'name' => $name,
+        'urlImage' => $urlImage,
+        'iv' =>  bin2hex($iv),
+        'body' => bin2hex($encrypted_body)
+    ];
+
     //update the item
-    $sql="UPDATE ITEM SET name = ?, urlImage = ?, iv = ?, body = ? WHERE id LIKE BINARY ? AND user LIKE BINARY ?";
-    $stmt=$conn->prepare($sql);
-    $stmt->bind_param("ssssis", $name, $urlImage, bin2hex($iv), bin2hex($encrypted_body), $item->id, $username);
-    $stmt->execute();
+    $res = $mysql->update_item($item_db);
+    if(!$res){
+        $response = [
+            "status" => "ERROR",
+            "msg" => -4
+        ];
+        echo json_encode($response);
+        return;
+    }
     
     $response = [
         "status" => "SUCCESS"
     ];
     echo json_encode($response);
 
-    $conn->close();
+    $mysql->close_connection();
 
 ?>

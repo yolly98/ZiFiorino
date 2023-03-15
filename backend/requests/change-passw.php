@@ -1,6 +1,6 @@
 <?php
 
-    require 'config.php';
+    require '../config.php';
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
@@ -29,30 +29,21 @@
     $username = $decoded_token->username;
     $old_passw = $decoded_token->password;
   
-    // create mysql connection
-    $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
-    if(!$conn){
+    // open mysql connection
+    $mysql = new MySQL();
+    $res = $mysql->open_connection($IP_ADDR, $USER_DB, $PASSW_DB, $NAME_DB);
+    if(!$res){
         $response = [
             "status" => "ERROR",
             "msg" => -3
         ];
         echo json_encode($response);
         return;
-    }    
-    $sql = "USE " . $NAME_DB . ";";
-    if(!$conn->query($sql)){
-        $response = [
-            "status" => "ERROR",
-            "msg" => -4
-        ];
-        echo json_encode($response);
-        $conn->close();
-        return;
-    }
+    }  
 
     // rebuild backup ecrypted with old password
     // get backup files
-    $file_path = "data/" . generate_hash($username) . "/*";
+    $file_path = "../data/" . generate_hash($username) . "/*";
     $files = glob($file_path);
     foreach($files as $file){
         // read backup
@@ -87,44 +78,62 @@
         file_put_contents($file, json_encode($new_data));
     }
        
-
     // get all items of the user from database
-    $sql = "SELECT* FROM ITEM WHERE user LIKE BINARY ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $items = $mysql->get_items($username);
+    if($res == null){
+        $response = [
+            "status" => "ERROR",
+            "msg" => -4
+        ];
+        echo json_encode($response);
+        return;
+    }
+    
+    foreach($items as $item){
+    
+        // encrypt item with the new passoword
+        $id = $item['id'];
+        $encrypted_body = hex2bin($item['body']);
+        $iv = hex2bin($item['iv']);
+        $body = decrypt($iv, $encrypted_body, $old_passw);
+        $iv = generate_iv();
+        $encrypted_body = encrypt($iv, $body, generate_hash($new_passw));
 
-    if($result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
+        //update the item
+        $item['iv'] = bin2hex($iv);
+        $item['body'] = bin2hex($encrypted_body);
+        $item['user'] = $username;
+        $res = $mysql->update_item($item);
+        if(!$res){
+            $response = [
+                "status" => "ERROR",
+                "msg" => -5
+            ];
+            echo json_encode($response);
+            return;
+        } 
         
-            // encrypt item with the new passoword
-            $id = $row['id'];
-            $encrypted_body = hex2bin($row['body']);
-            $iv = hex2bin($row['iv']);
-            $body = decrypt($iv, $encrypted_body, $old_passw);
-            $iv = generate_iv();
-            $encrypted_body = encrypt($iv, $body, generate_hash($new_passw));
-
-            //update the item
-            $sql="UPDATE ITEM SET iv = ?, body = ? WHERE id LIKE BINARY ? AND user LIKE BINARY ?";
-            $stmt=$conn->prepare($sql);
-            $stmt->bind_param("ssis", bin2hex($iv), bin2hex($encrypted_body), $id, $username);
-            $stmt->execute();
-        }
-
     }
 
     //update password on user table
-    $sql="UPDATE USER SET passw = ? WHERE user LIKE BINARY ?";
-    $stmt=$conn->prepare($sql);
-    $stmt->bind_param("ss", generate_hash_with_salt($new_passw), $username);
-    $stmt->execute();
+    $user = [
+        'username' => $username,
+        'password' => generate_hash_with_salt($new_passw)
+    ];
+    $res = $mysql->update_user($user);
+    if(!$res){
+        $response = [
+            "status" => "ERROR",
+            "msg" => -3
+        ];
+        echo json_encode($response);
+        return;
+    } 
 
     $response = [
         "status" => "SUCCESS"
     ];
     echo json_encode($response);
 
-    $conn->close(); 
+    $mysql->close_connection();
 ?>

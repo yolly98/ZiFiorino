@@ -2,7 +2,8 @@
 
 header('Access-Control-Allow-Origin: *');
 
-require './cipher/cipher.php';
+require 'cipher/cipher.php';
+require 'persistence/mysql.php';
 
 $IP_ADDR = '172.20.0.11';
 $USER_DB = 'root';

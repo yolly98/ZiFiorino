@@ -1,6 +1,6 @@
 <?php
 
-    require 'config.php';
+    require '../config.php';
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
@@ -25,11 +25,10 @@
         echo json_encode($response);
         return;
     }
-
     $username = $decoded_token->username;
 
     // check if the backup exists
-    $file_path = "data/" . generate_hash($username) . "/" . $file_name;
+    $file_path = "../data/" . generate_hash($username) . "/" . $file_name;
     if(!file_exists($file_path)){
         $response = [
             "status" => "ERROR",
@@ -38,52 +37,48 @@
         echo json_encode($response);
         return;
     }
-
-    // read backup
-    $file_json = file_get_contents($file_path);
-    $data = json_decode($file_json);
   
-    // create mysql connection
-    $conn = new mysqli($IP_ADDR, $USER_DB, $PASSW_DB);
-    if(!$conn){
-        $response = [
-            "status" => "ERROR",
-            "msg" => -3
-        ];
-        echo json_encode($response);
-        return;
-    }    
-    $sql = "USE " . $NAME_DB . ";";
-    if(!$conn->query($sql)){
+    // open mysql connection
+    $mysql = new MySQL();
+    $res = $mysql->open_connection($IP_ADDR, $USER_DB, $PASSW_DB, $NAME_DB);
+    if(!$res){
         $response = [
             "status" => "ERROR",
             "msg" => -4
         ];
         echo json_encode($response);
-        $conn->close();
         return;
     }
 
     // delete all item of the user
-    $sql = "DELETE FROM ITEM WHERE user LIKE BINARY ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
+    $res = $mysql->delete_all_items($username);
+    if(!$res){
+        $response = [
+            "status" => "ERROR",
+            "msg" => -5
+        ];
+        echo json_encode($response);
+        return;
+    }
+
+    // read backup
+    $file_json = file_get_contents($file_path);
+    $data = json_decode($file_json);
 
     // import backup in the database
     foreach($data as $item){
-        $id = $item->id;
-        $user = $item->user;
-        $name = $item->name;
-        $urlImage = $item->urlImage;
-        $iv = $item->iv;
-        $body = $item->body;
 
         //restore item
-        $sql = "INSERT INTO ITEM VALUES(?, ?, ?, ?, ?, ?);";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isssss", $id, $user, $name, $urlImage, $iv, $body);
-        $stmt->execute();
+        $item_db = (array)$item;
+        $res = $mysql->create_item($item_db);
+        if(!$res){
+            $response = [
+                "status" => "ERROR",
+                "msg" => -6
+            ];
+            echo json_encode($response);
+            return;
+        }    
     }
 
     $response = [
@@ -91,5 +86,5 @@
     ];
     echo json_encode($response);
 
-    $conn->close(); 
+    $mysql->close_connection(); 
 ?>

@@ -169,7 +169,7 @@ class App extends Component{
             html => {
                 if (html.status == "SUCCESS") {
                     let token =  html.token;
-                    console.log(token);
+                    // console.log(token);
                     this.setState(
                         {user, token},
                         () => {this.getItems()}
@@ -551,7 +551,6 @@ class App extends Component{
             url += "update-item.php";
         
         let msg = "body=" + JSON.stringify(json_msg);
-
         fetch(url, {
             method : "POST",
             headers: {

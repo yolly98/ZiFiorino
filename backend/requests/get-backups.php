@@ -1,6 +1,6 @@
 <?php
 
-    require 'config.php';
+    require '../config.php';
 
     $body = json_decode($_POST['body']);
     $token = $body->token;
@@ -28,7 +28,7 @@
     $username = $decoded_token->username;
     
     // get backup files
-    $file_path = "data/" . generate_hash($username) . "/*";
+    $file_path = "../data/" . generate_hash($username) . "/*";
     $files = glob($file_path);
     $file_names = array();
     foreach($files as $file)
