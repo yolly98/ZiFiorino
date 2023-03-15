@@ -40,7 +40,7 @@
         flex-direction: row;
     }
 
-    .passwMenu-container2-1{
+    #passwMenu-container2-1{
         display: flex;
         flex-direction: column;
         align-items: flex-start;

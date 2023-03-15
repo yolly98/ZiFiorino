@@ -93,10 +93,15 @@ class App extends Component{
                         );
                     }
                     this.setState({page: 'home', items});
-                    //console.log(items);
+                    // console.log(items);
                 } else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Caricamento fallito", errorAlert);
                 }
             }
         );
@@ -150,6 +155,11 @@ class App extends Component{
             this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
+
+        if (user.length > 30 || password.length > 30){
+            this.openAlert("ERROR", "Username e password non possono avare più di 30 caratteri", errorAlert);
+            return;
+        }
     
         let json_msg = {};
         json_msg.user = user;
@@ -176,12 +186,10 @@ class App extends Component{
                         );
                 } else {
                     console.error(html.msg);
-                    let msg = "";
-                    if(html.msg == -4 || html.msg == -5)
-                        msg = "Username o password non corretti";
+                    if(html.msg == -3|| html.msg == -4)
+                        this.openAlert("ERROR", "Username o password non corretti", errorAlert);
                     else
-                        msg = "Qualcosa è andato storto...";
-                    this.openAlert("ERROR", msg, errorAlert);
+                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
                 }
             }
         );
@@ -222,13 +230,10 @@ class App extends Component{
                 }
                 else {
                     console.error(html.msg);
-                    let msg = "";
-                    if(html.msg == -4)
-                        msg = "Username già in uso";
+                    if(html.msg == -3)
+                        this.openAlert("ERROR", "Username già in uso", errorAlert);
                     else
-                        msg = "Qualcosa è andato storto...";
-    
-                    this.openAlert("ERROR", msg, errorAlert);
+                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
@@ -324,8 +329,13 @@ class App extends Component{
                         });
                     
                 } else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Caricamento fallito", errorAlert);
                 }
             }
         );
@@ -410,8 +420,13 @@ class App extends Component{
                     });
                 }
                 else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
@@ -453,8 +468,13 @@ class App extends Component{
                     this.openAlert("", "I tuoi dati sono stati riportati allo stato del backup", infoAlert);
                 }
                 else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
@@ -495,8 +515,13 @@ class App extends Component{
                     });
                     
                 } else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Caricamento fallito", errorAlert);
                 }
             }
         );
@@ -590,9 +615,15 @@ class App extends Component{
                             document.getElementById('item-blocker').style.display = 'none';
                         }
                     );
-                } else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Salvataggio fallito", infoAlert);
+                }
+                else {
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Salvataggio fallito", infoAlert);
                 }
             }
         );
@@ -641,9 +672,15 @@ class App extends Component{
                             this.handleCloseAlert();
                         }
                     );
-                } else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", ("Rimozione di " + item.name + " fallita"), errorAlert);
+                }
+                else {
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", ("Rimozione di " + item.name + " fallita"), errorAlert);
                 }
             }
         );
@@ -702,8 +739,13 @@ class App extends Component{
                     });
                 }
                 else {
-                    console.error(html.msg);
-                    this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                    // console.error(html.msg);
+                    if(html.msg == -2){
+                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.setState({page: 'login'});
+                    }
+                    else
+                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );

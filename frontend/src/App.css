@@ -10,71 +10,7 @@ body {
 
 /* -------------- desktop ------------------ */
 
-@media (min-width: 1224px){
-
-
-    .items-container{
-        width: 100%;
-        display: flex;
-        flex-wrap: nowrap;
-        margin-bottom: 2rem;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #add-item{
-        position: fixed;
-        right: 1rem;
-        width: 4rem;
-        top: 10rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #refresh{
-        position: fixed;
-        right: 1rem;
-        width: 4rem;
-        top: 15rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #open-backup{
-        position: fixed;
-        right: 1rem;
-        width: 3.5rem;
-        top: 20rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    #change-passw{
-        position: fixed;
-        left: 1rem;
-        width: 3.5rem;
-        top: 10rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-    
-    #user-guide{
-        position: fixed;
-        left: 1rem;
-        width: 3.5rem;
-        bottom: 3rem;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-}
-
-
-/* -------------- tablet ------------------ */
-
-@media 
-(min-width: 769px) and
-(max-width: 1223px) {
+@media (min-width: 769px){
 
     .items-container{
         width: 100%;
