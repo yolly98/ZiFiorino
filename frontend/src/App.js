@@ -193,6 +193,11 @@ class App extends Component{
             this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
+
+        if (user.length > 30 || password.length > 30){
+            this.openAlert("ERROR", "Username e password non possono avare più di 30 caratteri", errorAlert);
+            return;
+        }
     
         let json_msg = {};
         json_msg.user = user;
@@ -660,8 +665,13 @@ class App extends Component{
         
         let passw = document.getElementsByClassName("passwMenu-input")[0].value;
         let r_passw = document.getElementsByClassName("passwMenu-input")[1].value;
+
         if(passw == "" || r_passw == ""){
             this.openAlert("ERROR", "Le password non posso essere vuote", errorAlert);
+            return;
+        }
+        if(passw.length > 30 || r_passw.length > 30){
+            this.openAlert("ERROR", "Le password inserite sono troppo lunghe (massimo 30 caratteri)", errorAlert);
             return;
         }
         if(passw != r_passw){
