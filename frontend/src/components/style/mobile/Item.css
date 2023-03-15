@@ -34,7 +34,7 @@
     .image-item{
         max-width: 5rem;
         width: 25vw;
-        border-radius: 0.5rem;
+        border-radius: 1rem;
     }
 
     .img-delete{
