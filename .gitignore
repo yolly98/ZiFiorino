@@ -4,15 +4,15 @@
 !/backend/data/.gitkeep
 
 # dependencies
-frontend/zifiorino/node_modules
-frontend/zifiorino/.pnp
+frontend/node_modules
+frontend/.pnp
 .pnp.js
 
 # testing
-frontend/zifiorino/coverage
+frontend/coverage
 
 # production
-frontend/zifiorino/build
+frontend/build
 
 # misc
 .DS_Store

@@ -477,7 +477,7 @@ class App extends Component{
         ).then(
             html => {
                 if (html.status == "SUCCESS") {
-                    console.log(html.item);
+                    
                     let item_body = JSON.parse(html.item);
                     item.username = item_body.username;
                     item.password = item_body.password;

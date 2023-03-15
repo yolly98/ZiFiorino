@@ -50,6 +50,44 @@
         return;
     }
 
+    // rebuild backup ecrypted with old password
+    // get backup files
+    $file_path = "data/" . generate_hash($username) . "/*";
+    $files = glob($file_path);
+    foreach($files as $file){
+        // read backup
+        $data = json_decode(file_get_contents($file));
+
+        $new_data = array();
+        foreach($data as $item){
+            $id = $item->id;
+            $user = $item->user;
+            $name = $item->name;
+            $urlImage = $item->urlImage;
+            $iv = $item->iv;
+            $encrypted_body = $item->body;
+    
+            // decrypt body with old password e encrypt with the new one
+            $decrypted_body = decrypt(hex2bin($iv), hex2bin($encrypted_body), $old_passw);
+            $iv = generate_iv();
+            $encrypted_body = encrypt($iv, $decrypted_body, generate_hash($new_passw));
+
+            $item = [
+                "id" => $id,
+                "user" =>$user,
+                "name" => $name,
+                "urlImage" => $urlImage,
+                "iv" => bin2hex($iv),
+                "body" => bin2hex($encrypted_body),
+            ];
+            array_push($new_data, $item);
+        }
+
+        unlink($file);
+        file_put_contents($file, json_encode($new_data));
+    }
+       
+
     // get all items of the user from database
     $sql = "SELECT* FROM ITEM WHERE user LIKE BINARY ?;";
     $stmt = $conn->prepare($sql);
@@ -84,8 +122,7 @@
     $stmt->execute();
 
     $response = [
-        "status" => "SUCCESS",
-        "items" => json_encode(array())
+        "status" => "SUCCESS"
     ];
     echo json_encode($response);
 
