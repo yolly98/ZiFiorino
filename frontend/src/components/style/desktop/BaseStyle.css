@@ -1,0 +1,54 @@
+:root {
+    --color1: #6e5d57;
+    --color2: #fcfff1;
+    --color3: #515151;
+    --color4: #b1acac;
+}
+
+label{
+    font-weight: bold;
+    color: var(--color2);
+    margin-bottom: 0.5rem;
+
+}
+
+p{
+    color: var(--color2);
+}
+
+@media (min-width: 1224px){
+
+    button{
+        color: var(--color1);
+        border: 0.2rem solid var(--color1);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: var(--color4);
+        cursor: pointer;
+    }
+
+    button:active{
+        border-color: var(--color4);
+        color: var(--color4);
+        background-color: var(--color1);
+    }
+
+    input[type='text'], input[type='password'], textarea {
+        background-color: var(--color4);
+        border-radius: 0.5rem;
+        border: 0 transparent;
+        height: 2rem;
+        width: 15rem;
+        color: var(--color2);
+        font-size: 1rem;
+        color: var(--color1);
+        text-align: center;
+    }
+
+    input:active{
+        border: 0 transparent;
+    }
+
+
+}

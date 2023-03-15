@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import '../style/desktop/Navbar.css'
+import '../style/tablet/Navbar.css'
+import '../style/mobile/Navbar.css'
 
 import search from '../../images/search.png'
 import exit from '../../images/exit.png'
 import logo from '../../images/logo.png'
-
-import '../style/Navbar.css'
 
 class Navbar extends Component{
   render(){

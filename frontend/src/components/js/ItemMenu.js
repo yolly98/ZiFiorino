@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import '../style/ItemMenu.css'
+import '../style/desktop/ItemMenu.css'
+import '../style/tablet/ItemMenu.css'
+import '../style/mobile/ItemMenu.css'
 
 import cross from '../../images/delete.png';
 import defaultImage from '../../images/defaultWebsite.png';

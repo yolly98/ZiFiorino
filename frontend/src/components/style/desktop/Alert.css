@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 601px){
+@media (min-width: 1224px){
 
     #alert-container{
         position: fixed;
@@ -59,11 +59,4 @@
         text-align: center;
     }
 
-}
-
-/***************** for mobile device *****************/
-
-@media (max-width: 600px){
-
-   
 }

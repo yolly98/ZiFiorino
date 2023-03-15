@@ -16,7 +16,9 @@ p{
     color: var(--color2);
 }
 
-@media (min-width: 601px){
+@media 
+(min-width: 769px) and
+(max-width: 1223px) {
 
     button{
         color: var(--color1);
@@ -50,42 +52,4 @@ p{
         border: 0 transparent;
     }
 
-
-}
-
-/***************** for mobile device *****************/
-
-@media (max-width: 600px){
-
-    button{
-        color: var(--color1);
-        border: 0.2rem solid var(--color1);
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: var(--color4);
-        cursor: pointer;
-    }
-
-    button:active{
-        border-color: var(--color4);
-        color: var(--color4);
-        background-color: var(--color1);
-    }
-
-    input[type='text'], input[type='password'], textarea {
-        background-color: var(--color4);
-        border-radius: 0.5rem;
-        border: 0 transparent;
-        height: 1.8rem;
-        width: 15rem;
-        color: var(--color2);
-        font-size: 0.8rem;
-        color: var(--color1);
-        text-align: center;
-    }
-
-    input:active{
-        border: 0 transparent;
-    }
 }

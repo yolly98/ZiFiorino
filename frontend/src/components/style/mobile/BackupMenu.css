@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 601px){
+@media (max-width: 768px){
 
     #backupMenu-section{
         width: 100%;
@@ -62,11 +62,4 @@
         border-radius: 0.5rem;
     }
     
-}
-
-/***************** for mobile device *****************/
-
-@media (max-width: 600px){
-    
-
 }

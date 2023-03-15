@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 601px){
+@media (min-width: 1224px){
 
     #nav{
         background-color: var(--color1);
@@ -96,11 +96,4 @@
     .botton-icon:hover{
         background-color: var(--color3);
     }
-}
-
-/***************** for mobile device *****************/
-
-@media (max-width: 600px){
-
-    
 }

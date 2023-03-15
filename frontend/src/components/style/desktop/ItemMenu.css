@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 601px){
+@media (min-width: 1224px){
 
     #itemMenu-section{
         width: 100%;
@@ -105,13 +105,5 @@
     #itemMenu-copy:hover + #itemMenu-copy-tooltip{
         opacity: 1;
     }
-
-}
-
-/***************** for mobile device *****************/
-
-@media (max-width: 600px){
-    
-    
 
 }

@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import '../style/Alert.css'
+import '../style/desktop/Alert.css'
+import '../style/tablet/Alert.css'
+import '../style/mobile/Alert.css'
+
 
 import cross from '../../images/delete.png'
 

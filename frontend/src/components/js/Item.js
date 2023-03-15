@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import '../style/Item.css'
+import '../style/desktop/Item.css'
+import '../style/tablet/Item.css'
+import '../style/mobile/Item.css'
 
 import cross from '../../images/removeItem.png'
 

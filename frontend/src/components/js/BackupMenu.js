@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import '../style/BackupMenu.css';
+import '../style/desktop/BackupMenu.css';
+import '../style/tablet/BackupMenu.css';
+import '../style/mobile/BackupMenu.css';
 
 import cross from '../../images/delete.png';
 import create from '../../images/new.png';

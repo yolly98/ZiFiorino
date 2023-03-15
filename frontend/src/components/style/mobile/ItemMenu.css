@@ -1,0 +1,109 @@
+@import url('BaseStyle.css');
+
+@media (max-width: 768px){
+
+    #itemMenu-section{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 8;
+    }
+
+    #itemMenu-container{
+        background-color: var(--color3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 1rem;
+        overflow-x: hidden;
+    }
+
+    #itemMenu-container2{
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    #itemMenu-container3{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #itemMenu-passwContainer{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+    }
+
+    #itemMenu-container4{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    #itemMenu-image{
+        height: 4rem;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+    }
+
+    .itemMenu-label{
+        margin-bottom: 0.5rem;
+    }
+
+    #itemMenu-input-notes{
+        width: 100%;
+        height: 8rem;
+        text-align: left;
+    }
+
+    .itemMenu-text:active{
+        border: 0 transparent;
+    }
+
+    #itemMenu-showPassw{
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+        margin-left: 1rem;
+    }
+
+    #itemMenu-copy{
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+        margin-left: 1rem;
+    }
+
+    #itemMenu-copy-tooltip{
+        background-color: var(--color1);
+        padding: 0.5rem;
+        display: flex;
+        opacity: 0;
+        height: 1.5rem;
+        border-radius: 0.5rem;
+        margin-left: 1rem;
+        width: 4rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    #itemMenu-copy-tooltip-label{
+        margin: 0;
+    }
+
+    #itemMenu-copy:hover + #itemMenu-copy-tooltip{
+        opacity: 1;
+    }
+
+}
