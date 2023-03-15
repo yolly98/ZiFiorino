@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../style/desktop/ItemMenu.css'
-import '../style/tablet/ItemMenu.css'
 import '../style/mobile/ItemMenu.css'
 
 import cross from '../../images/delete.png';
@@ -82,9 +81,11 @@ class ItemMenu extends Component{
                         <label className='itemMenu-label'>Password</label>
                         <div id="itemMenu-passwContainer" style={{marginBottom: '1rem'}}>
                             <input className="itemMenu-text" id="itemMenu-input-password" type="password"/>
-                            <img id="itemMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw()} onMouseUp={() => this.showPassw()}></img>
-                            <img id="itemMenu-copy" src={copy} onClick={() => this.copy()}></img>
-                            <div id="itemMenu-copy-tooltip"><label id="itemMenu-copy-tooltip-label">Copia</label></div>
+                            <div id="itemMenu-container3-1">
+                                <img id="itemMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw()} onMouseUp={() => this.showPassw()}></img>
+                                <img id="itemMenu-copy" src={copy} onClick={() => this.copy()}></img>
+                                <div id="itemMenu-copy-tooltip"><label id="itemMenu-copy-tooltip-label">Copia</label></div>
+                            </div>
                         </div>
                         <label className='itemMenu-label'>Url Icona</label>
                         <input  className="itemMenu-text" id="itemMenu-input-url" type="text" style={{marginBottom: '1rem'}}/>

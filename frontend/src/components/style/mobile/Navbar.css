@@ -8,17 +8,17 @@
     }
 
     #nav-logo-container{
-        border-radius: 3rem;
+        border-radius: 2rem;
         background-color: var(--color4);
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem;
-        margin-right: 1rem;
+        padding: 0.5rem;
+        margin-right: 0.5rem;
     }
 
     #nav-logo{
-        height: 4rem;
+        height: 2.5rem;
     }
 
     #nav-title{
@@ -28,10 +28,10 @@
 
     #nav-container1{
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: nowrap;
-        justify-content: space-between;
-        padding: 1rem 2rem;
+        padding: 0.5rem 1rem;
+        align-items: center;
     }
 
     #nav-container2{
@@ -42,11 +42,9 @@
 
     #nav-container3{
         display: flex;
-        align-content: flex-end;
-        flex-wrap: nowrap;
         flex-direction: column;
-        align-items: flex-end;
-        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
     }
 
     #nav-container4{
@@ -56,7 +54,7 @@
     }
 
     #nav-container5{
-        margin-bottom: 0.5rem;
+        margin: 0.5rem 0;
         display: flex;
         flex-wrap: nowrap;
         align-items: center;
@@ -70,9 +68,8 @@
     }
 
     #img-search{
-        width: 2.5rem;
-        margin-left: 0.5rem;
-        margin-right: 1rem;
+        width: 2rem;
+        margin: 0 0.5rem;
         cursor: pointer;
     }
 

@@ -16,6 +16,8 @@ p{
     color: var(--color2);
 }
 
+/* designed to support smartphone with minimun with 320px */
+
 @media (max-width: 768px){
 
     button{

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../style/desktop/Alert.css'
-import '../style/tablet/Alert.css'
 import '../style/mobile/Alert.css'
 
 

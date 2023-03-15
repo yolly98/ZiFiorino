@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../style/desktop/Login.css'
-import '../style/tablet/Login.css'
 import '../style/mobile/Login.css'
 
 import logo from '../../images/logo.png'

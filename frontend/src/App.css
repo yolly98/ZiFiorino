@@ -8,7 +8,9 @@ body {
 }
 
 
-@media (min-width: 601px){
+/* -------------- desktop ------------------ */
+
+@media (min-width: 1224px){
 
 
     .items-container{
@@ -67,8 +69,127 @@ body {
 
 }
 
-/***************** for mobile device *****************/
 
-@media (max-width: 600px){
+/* -------------- tablet ------------------ */
+
+@media 
+(min-width: 769px) and
+(max-width: 1223px) {
+
+    .items-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 2rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #add-item{
+        position: fixed;
+        right: 1rem;
+        width: 4rem;
+        top: 10rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #refresh{
+        position: fixed;
+        right: 1rem;
+        width: 4rem;
+        top: 15rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #open-backup{
+        position: fixed;
+        right: 1rem;
+        width: 3.5rem;
+        top: 20rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #change-passw{
+        position: fixed;
+        left: 1rem;
+        width: 3.5rem;
+        top: 10rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+    
+    #user-guide{
+        position: fixed;
+        left: 1rem;
+        width: 3.5rem;
+        bottom: 3rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+}
+
+
+/* -------------- mobile ------------------ */
+
+@media (max-width: 768px){
+
+
+    .items-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 2rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #add-item{
+        position: fixed;
+        right: 0.2rem;
+        width: 3rem;
+        top: 11rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #refresh{
+        position: fixed;
+        right: 0.2rem;
+        width: 3rem;
+        top: 14.4rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #open-backup{
+        position: fixed;
+        right: 0.3rem;
+        width: 2.8rem;
+        top: 18rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    #change-passw{
+        position: fixed;
+        left: 0.2rem;
+        width: 3rem;
+        bottom: 1rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+    
+    #user-guide{
+        position: fixed;
+        right: 0.2rem;
+        width: 3rem;
+        bottom: 1rem;
+        cursor: pointer;
+        z-index: 2;
+    }
 
 }

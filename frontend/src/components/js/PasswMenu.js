@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../style/desktop/PasswMenu.css';
-import '../style/tablet/PasswMenu.css';
 import '../style/mobile/PasswMenu.css';
 
 import cross from '../../images/delete.png';

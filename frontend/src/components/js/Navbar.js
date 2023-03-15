@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../style/desktop/Navbar.css'
-import '../style/tablet/Navbar.css'
 import '../style/mobile/Navbar.css'
 
 import search from '../../images/search.png'

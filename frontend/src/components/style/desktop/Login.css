@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 1224px){
+@media (min-width: 769px){
     
     #login-page{
         position: absolute;

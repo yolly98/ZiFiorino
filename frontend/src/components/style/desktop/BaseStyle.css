@@ -16,7 +16,7 @@ p{
     color: var(--color2);
 }
 
-@media (min-width: 1224px){
+@media (min-width: 769px){
 
     button{
         color: var(--color1);

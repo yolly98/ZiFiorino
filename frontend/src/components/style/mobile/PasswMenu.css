@@ -37,13 +37,14 @@
         display: flex;
         width: 100%;
         align-items: center;
-        flex-direction: row;
+        flex-direction: column;
     }
 
-    .passwMenu-container2-1{
+    #passwMenu-container2-1{
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        margin-top: 0.5rem;
     }
 
     #passwMenu-container3{
@@ -71,7 +72,6 @@
     #passwMenu-image{
         height: 5rem;
         border-radius: 0.5rem;
-        margin-right: 2rem;
     }
 
     .passwMenu-label{

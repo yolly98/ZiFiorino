@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 1224px){
+@media (min-width: 769px){
 
     #itemMenu-section{
         width: 100%;
@@ -34,6 +34,12 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    #itemMenu-container3-1{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     #itemMenu-passwContainer{

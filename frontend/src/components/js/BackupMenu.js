@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../style/desktop/BackupMenu.css';
-import '../style/tablet/BackupMenu.css';
 import '../style/mobile/BackupMenu.css';
 
 import cross from '../../images/delete.png';
@@ -30,8 +29,8 @@ class BackupMenu extends Component{
                             >
                                 <label>{backup.date}</label>
                                 <div id="backupMenu-item-container">
-                                    <img src={create} style={{width: '2rem', cursor: 'pointer', marginRight: '1.2rem'}} onClick={()=>this.props.onNew(backup)}/>
-                                    <img src={restore} style={{width: '2.5rem', cursor: 'pointer'}} onClick={()=>this.props.onRestore(backup)}/>
+                                    <img id="backupMenu-item-new" src={create} style={{width: '2rem', cursor: 'pointer', marginRight: '1.2rem'}} onClick={()=>this.props.onNew(backup)}/>
+                                    <img id="backupMenu-item-restore" src={restore} style={{width: '2.5rem', cursor: 'pointer'}} onClick={()=>this.props.onRestore(backup)}/>
                                 </div>
                             </div>
                             ))

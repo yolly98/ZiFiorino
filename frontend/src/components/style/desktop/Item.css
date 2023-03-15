@@ -1,6 +1,6 @@
 @import url('BaseStyle.css');
 
-@media (min-width: 1224px){
+@media (min-width: 769px){
 
     .item-col{
         z-index: 1;
@@ -10,7 +10,6 @@
 
     .item-container{
         background-color: var(--color1);
-        width: 40rem;
         padding: 1rem;
         border-radius: 1rem;
         display: flex;
@@ -19,10 +18,19 @@
         justify-content: space-between;
     }
 
+    .item-container1{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .item-container2{
+        display: flex;
+    }
 
     .image-item{
-        max-width: 3rem;
-        height: 3rem;
+        max-width: 5rem;
+        width: 7vw;
         border-radius: 0.5rem;
     }
 
@@ -33,19 +41,16 @@
 
     .item-title-container{
         display: flex;
-        height: 3rem;
-        align-items: center;
-        margin-top: 0.5rem;
-        width: 80%;
+        width: 45vw;
         justify-content: center;
         cursor: pointer;
+        align-items: center;
     }
 
     .item-title{
         font-weight: bold;
         margin: 0;
-        margin-top: 0.3rem;
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         text-align: center;
         cursor: pointer;
     }

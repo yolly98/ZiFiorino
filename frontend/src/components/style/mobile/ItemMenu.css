@@ -36,10 +36,19 @@
         align-items: flex-start;
     }
 
+    #itemMenu-container3-1{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+
     #itemMenu-passwContainer{
         display: flex;
+        flex-direction: column;
         align-items: center;
-        flex-direction: row;
     }
 
     #itemMenu-container4{
@@ -52,9 +61,9 @@
     }
 
     #itemMenu-image{
-        height: 4rem;
-        margin: 0.5rem 0;
+        height: 3rem;
         border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
     }
 
     .itemMenu-label{
@@ -63,7 +72,7 @@
 
     #itemMenu-input-notes{
         width: 100%;
-        height: 8rem;
+        height: 5rem;
         text-align: left;
     }
 
@@ -75,14 +84,12 @@
         height: 2rem;
         width: 2rem;
         cursor: pointer;
-        margin-left: 1rem;
     }
 
     #itemMenu-copy{
         height: 2rem;
         width: 2rem;
         cursor: pointer;
-        margin-left: 1rem;
     }
 
     #itemMenu-copy-tooltip{
@@ -92,7 +99,6 @@
         opacity: 0;
         height: 1.5rem;
         border-radius: 0.5rem;
-        margin-left: 1rem;
         width: 4rem;
         display: flex;
         justify-content: center;
