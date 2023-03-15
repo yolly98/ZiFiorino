@@ -1,27 +1,22 @@
 <?php
 
-$IP_ADDR = '172.20.0.11';
-$USER_DB = 'root';
-$PASSW_DB = 'password';
-$NAME_DB = 'zifiorino_db';
-
 class MySql {
 
     private $conn;
 
     public function __constructor(){
-        $conn = null;
+        $this->conn = null;
     }
     
     public function open_connection($ip_addr, $user_db, $passw_db, $name_db){
         
-        $conn = mysqli_connect($IP_ADDR, $USER_DB, $PASSW_DB);
-        if(!$conn)
+        $this->conn = mysqli_connect($ip_addr, $user_db, $passw_db);
+        if(!$this->conn)
             return false;
 
-        $sql = "USE " . $NAME_DB . ";";
-        if(!$conn->query($sql)){
-            $conn->close();
+        $sql = "USE " . $name_db . ";";
+        if(!$this->conn->query($sql)){
+            $this->conn->close();
             return false;
         }
         
@@ -29,18 +24,18 @@ class MySql {
     }
 
     public function close_connection(){
-        $conn->close();
-        $conn = null;
+        $this->conn->close();
+        $this->conn = null;
     }
 
     // ------------- GET -----------------
     public function get_user($username){
 
-        if($conn == null)
+        if($this->conn == null)
             return null;
         
         $sql = "SELECT* FROM USER WHERE user LIKE BINARY ?";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return null;
 
         $stmt->bind_param("s", $username);
@@ -64,11 +59,11 @@ class MySql {
 
     public function get_item($id, $username){
 
-        if($conn == null)
+        if($this->conn == null)
             return null;
 
-        $sql = "SELECT* FROM ITEM WHERE id LIKE BINARY ? AND user LIKE BINARY ?;";
-        $stmt = $conn->prepare($sql);
+        $sql = "SELECT * FROM ITEM WHERE id LIKE BINARY ? AND user LIKE BINARY ?;";
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return null;
 
         $stmt->bind_param("is", $id, $username);
@@ -98,15 +93,17 @@ class MySql {
 
                 return $item;
             }
+
+        return null;
     }
 
     public function get_items($username){
 
-        if($conn == null)
+        if($this->conn == null)
             return null;
 
         $sql = "SELECT* FROM ITEM WHERE user LIKE BINARY ?;";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return null;
 
         $stmt->bind_param("s", $username);
@@ -143,14 +140,14 @@ class MySql {
     // -------------- CREATE ------------------
     public function create_user($user){
 
-        if($conn == null)
+        if($this->conn == null)
             return false;
 
         $sql="INSERT INTO USER VALUES(?, ?)";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return false;
         
-        $stmt->bind_param("ss", $user->username, $user->password);
+        $stmt->bind_param("ss", $user['username'], $user['password']);
         if(!$stmt) return false;
         
         $stmt->execute();
@@ -159,39 +156,40 @@ class MySql {
         return true;
     }
 
-    public function create_item($item){
+    public function create_item(&$item){
 
-        if($conn == null)
-            return -1;
+        if($this->conn == null)
+            return false;
         
         $sql = "INSERT INTO ITEM VALUES(?, ?, ?, ?, ?, ?);";
-        $stmt = $conn->prepare($sql);
-        if(!$stmt) return -1;
+        $stmt = $this->conn->prepare($sql);
+        if(!$stmt) return false;
 
-        $stmt->bind_param("isssss", $item->id, $item->user, $item->name, $item->$urlImage, $item->iv, $item->body);
-        if(!$stmt) return -1;
+        $stmt->bind_param("isssss", $item['id'], $item['user'], $item['name'], $item['urlImage'], $item['iv'], $item['body']);
+        if(!$stmt) return false;
 
         $stmt->execute();
-        if(!$stmt) return -1;
+        if(!$stmt) return false;
 
         //get the id assigned to the item
-        $sql = "SELECT id from ITEM WHERE user LIKE BINARY ? ORDER BY id DESC LIMIT 1;";
-        $stmt = $conn->prepare($sql);
-        if(!$stmt) return -1;
+        $sql = "SELECT * from ITEM WHERE user LIKE BINARY ? ORDER BY id DESC LIMIT 1;";
+        $stmt = $this->conn->prepare($sql);
+        if(!$stmt) return false;
 
-        $stmt->bind_param("s", $username);
-        if(!$stmt) return -1;
+        $stmt->bind_param("s", $item['user']);
+        if(!$stmt) return false;
 
         $stmt->execute();
-        if(!$stmt) return -1;
+        if(!$stmt) return false;
 
         $result = $stmt->get_result();
-        if($result->num_rows <= 0)
-            return -1;
+        if($result->num_rows <= 0){
+            return false;
+        }
 
         while($row = $result->fetch_assoc()){
-            $id = $row['id'];
-            return $id;
+            $item['id'] = $row['id'];
+            return true;
         }
     }
 
@@ -200,30 +198,32 @@ class MySql {
 
     public function update_user($user){
 
-        if($conn == null)
+        if($this->conn == null)
             return false;
 
         $sql="UPDATE USER SET passw = ? WHERE user LIKE BINARY ?";
-        $stmt=$conn->prepare($sql);
+        $stmt=$this->conn->prepare($sql);
         if(!$stmt) return false;
 
-        $stmt->bind_param("ss", $user->password, $user->username);
+        $stmt->bind_param("ss", $user['password'], $user['username']);
         if(!$stmt) return false;
 
         $stmt->execute();
         if(!$stmt) return false;
+
+        return true;
     }
 
     public function update_item($item){
         
-        if($conn == null)
+        if($this->conn == null)
             return false;
 
         $sql="UPDATE ITEM SET name = ?, urlImage = ?, iv = ?, body = ? WHERE id LIKE BINARY ? AND user LIKE BINARY ?";
-        $stmt=$conn->prepare($sql);
+        $stmt=$this->conn->prepare($sql);
         if(!$stmt) return false;
         
-        $stmt->bind_param("ssssis", $item->name, $item->urlImage, $item->iv, $item->body, $item->$id, $item->user);
+        $stmt->bind_param("ssssis", $item['name'], $item['urlImage'], $item['iv'], $item['body'], $item['$id'], $item['user']);
         if(!$stmt) return false;
 
         $stmt->execute();
@@ -234,14 +234,14 @@ class MySql {
 
     // -------------- DELETE -----------------
 
-    public function remove_item($id, $username){
+    public function delete_item($id, $username){
 
-        if($conn == null)
+        if($this->conn == null)
             return false;
 
         //remove the item
         $sql = "DELETE FROM ITEM WHERE id LIKE BINARY ? AND user LIKE BINARY ?;";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return false;
 
         $stmt->bind_param("is", $id, $username);
@@ -252,7 +252,7 @@ class MySql {
 
         //check if the item exists
         $sql = "SELECT * from ITEM WHERE id LIKE BINARY ?;";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return false;
 
         $stmt->bind_param("i", $id);
@@ -270,14 +270,14 @@ class MySql {
 
     }
 
-    public function remove_all_item($username){
+    public function delete_all_items($username){
 
-        if($conn == null)
+        if($this->conn == null)
             return false;
 
         // remove all item of the user
         $sql = "DELETE FROM ITEM WHERE user LIKE BINARY ?;";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return false;
 
         $stmt->bind_param("s", $username);
@@ -288,7 +288,7 @@ class MySql {
 
         //check if the item exists
         $sql = "SELECT * from ITEM WHERE user LIKE BINARY ?;";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         if(!$stmt) return false;
 
         $stmt->bind_param("s", $username);
@@ -298,6 +298,41 @@ class MySql {
         if(!$stmt) return false;
 
         $result = $stmt->get_result();
+        if($result->num_rows > 0)
+            return false;
+        
+        return true;
+    }
+
+    public function delete_user($username){
+
+        if($this->conn == null)
+            return false;
+
+        //remove the user
+        $sql = "DELETE FROM USER WHERE user LIKE BINARY ?;";
+        $stmt = $this->conn->prepare($sql);
+        if(!$stmt) return false;
+
+        $stmt->bind_param("s", $username);
+        if(!$stmt) return false;
+
+        $stmt->execute();
+        if(!$stmt) return false;
+
+        //check if the user exists
+        $sql = "SELECT * from USER WHERE user LIKE BINARY ?;";
+        $stmt = $this->conn->prepare($sql);
+        if(!$stmt) return false;
+
+        $stmt->bind_param("s", $user);
+        if(!$stmt) return false;
+
+        $stmt->execute();
+        if(!$stmt) return false;
+
+        $result = $stmt->get_result();
+
         if($result->num_rows > 0)
             return false;
         
