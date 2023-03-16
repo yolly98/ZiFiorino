@@ -14,8 +14,10 @@
         padding: 1rem;
         border-radius: 1rem;
         display: flex;
-        align-items: center;
         flex-direction: column-reverse;
+        height: 10rem;
+        align-items: center;
+        justify-content: center;
     }
 
     .item-container1{

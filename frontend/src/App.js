@@ -92,6 +92,7 @@ class App extends Component{
                             }
                         );
                     }
+                    items.sort((a, b) => a.name.localeCompare(b.name));
                     this.setState({page: 'home', items});
                     // console.log(items);
                 } else {
@@ -318,9 +319,7 @@ class App extends Component{
                         );
                     }
 
-                    backups.sort(function(a, b) {
-                        return a.date - b.date;
-                      });
+                    backups.sort((a, b) => a.date.localeCompare(b.date));
                     backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
@@ -384,7 +383,9 @@ class App extends Component{
         }
         else
             old_file_name = "new";
-        let new_file_name = (new Date()).toLocaleString();
+        
+        let date_option = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        let new_file_name = (new Date()).toLocaleString(undefined, date_option);
         new_file_name = new_file_name.replace(/\//g, "-");
         let new_date = new_file_name;
         new_file_name = new_file_name.replace(/ /g, "!");
@@ -631,7 +632,7 @@ class App extends Component{
 
     handleDeleteItem = item => {
        
-        this.openAlert("", "Vuoi davvero eliminare " + item.name, warningAlert, "flex", item, this.handleCloseAlert, this.deleteItem);   
+        this.openAlert("", "Vuoi davvero eliminare '" + item.name + "'", warningAlert, "flex", item, this.handleCloseAlert, this.deleteItem);   
         if(this.state.itemMenu > -1){
             this.setState({itemMenu: -1}, 
                 () => {
