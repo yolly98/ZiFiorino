@@ -33,12 +33,12 @@ class PasswMenu extends Component{
                             <label className="passwMenu-label">Inserisci Nuova Password</label>
                             <div className="passwMenu-passwContainer">
                                 <input className="passwMenu-input" type='password'></input>
-                                <img className="passwMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw(0)} onMouseUp={() => this.showPassw(0)}></img>
+                                <img className="passwMenu-showPassw" src={showPassw} onClick={() => this.showPassw(0)}></img>
                             </div>
                             <label className="passwMenu-label">Ripeti Nuova Password</label>
                             <div className="passwMenu-passwContainer">
                                 <input className="passwMenu-input" type='password'></input>
-                                <img className="passwMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw(1)} onMouseUp={() => this.showPassw(1)}></img>
+                                <img className="passwMenu-showPassw" src={showPassw} onClick={() => this.showPassw(1)}></img>
                             </div>
                         </div>
                     </div>

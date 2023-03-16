@@ -82,7 +82,7 @@ class ItemMenu extends Component{
                         <div id="itemMenu-passwContainer" style={{marginBottom: '1rem'}}>
                             <input className="itemMenu-text" id="itemMenu-input-password" type="password"/>
                             <div id="itemMenu-container3-1">
-                                <img id="itemMenu-showPassw" src={showPassw} onMouseDown={() => this.showPassw()} onMouseUp={() => this.showPassw()}></img>
+                                <img id="itemMenu-showPassw" src={showPassw} onClick={() => this.showPassw()}></img>
                                 <img id="itemMenu-copy" src={copy} onClick={() => this.copy()}></img>
                                 <div id="itemMenu-copy-tooltip"><label id="itemMenu-copy-tooltip-label">Copia</label></div>
                             </div>
