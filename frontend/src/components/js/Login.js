@@ -21,7 +21,7 @@ class Login extends Component{
                     style={{borderRadius: '0.5rem', fontSize: '1.5rem', marginTop: '0.5rem'}} 
                     onClick={() => this.props.onLogin(document.getElementById('login-input-user').value, document.getElementById('login-input-password').value)}
                 >
-                        LOGIN
+                        ACCEDI
                 </button>
                 <button  
                     style={{borderRadius: '0.5rem', fontSize: '1.5rem', marginTop: '1.5rem'}} 
