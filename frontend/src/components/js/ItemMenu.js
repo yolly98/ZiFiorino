@@ -45,15 +45,20 @@ class ItemMenu extends Component{
 
     }
 
-    copy(){
+    copy(index){
 
-        let passw = document.getElementById('itemMenu-input-password');
-        passw.type ='text';
-        passw.select();
-        passw.setSelectionRange(0,99999);//needed for mobile devices
+        let input = document.getElementsByClassName('itemMenu-text-cop')[index];
+        let isPassw = false;
+        if(input.type == 'password')
+            isPassw = true;
+        if(isPassw)
+            input.type ='text';
+        input.select();
+        input.setSelectionRange(0,99999);//needed for mobile devices
         document.execCommand("copy");
-        passw.type='password';
-        document.getElementById("itemMenu-copy-tooltip-label").innerText = "Copiato";
+        if(isPassw)
+            input.type='password';
+        document.getElementsByClassName("itemMenu-copy-tooltip-label")[index].innerText = "Copiato";
     }
 
     showPassw(){
@@ -76,19 +81,33 @@ class ItemMenu extends Component{
                         <img id="itemMenu-image" src={this.state.image}/>
                         <label className='itemMenu-label'>Nome</label>
                         <input className="itemMenu-text" id="itemMenu-input-name" type="text" style={{marginBottom: '1rem'}}/>
-                        <label className='itemMenu-label'>Username</label>
-                        <input className="itemMenu-text" id="itemMenu-input-username" type="text" style={{marginBottom: '1rem'}}/>
-                        <label className='itemMenu-label'>Password</label>
-                        <div id="itemMenu-passwContainer" style={{marginBottom: '1rem'}}>
-                            <input className="itemMenu-text" id="itemMenu-input-password" type="password"/>
-                            <div id="itemMenu-container3-1">
-                                <img id="itemMenu-showPassw" src={showPassw} onClick={() => this.showPassw()}></img>
-                                <img id="itemMenu-copy" src={copy} onClick={() => this.copy()}></img>
-                                <div id="itemMenu-copy-tooltip"><label id="itemMenu-copy-tooltip-label">Copia</label></div>
-                            </div>
-                        </div>
                         <label className='itemMenu-label'>Url Icona</label>
                         <input  className="itemMenu-text" id="itemMenu-input-url" type="text" style={{marginBottom: '1rem'}}/>
+                        <label className='itemMenu-label'>Username</label>
+                        <div id="itemMenu-usernameContainer" style={{marginBottom: '1rem'}}>
+                            <input className="itemMenu-text-cop" id="itemMenu-input-username" type="text" />
+                            <div className="itemMenu-container3-1">
+                                <img className="itemMenu-copy" id="itemMenu-copy-username" src={copy} onClick={() => this.copy(0)}></img>
+                                <div 
+                                    className="itemMenu-copy-tooltip" 
+                                    id="itemMenu-copy-tooltip-username">
+                                        <label className="itemMenu-copy-tooltip-label">Copia</label>
+                                </div>
+                            </div>
+                        </div>
+                        <label className='itemMenu-label'>Password</label>
+                        <div id="itemMenu-passwContainer" style={{marginBottom: '1rem'}}>
+                            <input className="itemMenu-text-cop" id="itemMenu-input-password" type="password"/>
+                            <div className="itemMenu-container3-1">
+                                <img id="itemMenu-showPassw" src={showPassw} onClick={() => this.showPassw()}></img>
+                                <img className="itemMenu-copy" id="itemMenu-copy-password" src={copy} onClick={() => this.copy(1)}></img>
+                                <div 
+                                    className="itemMenu-copy-tooltip" 
+                                    id="itemMenu-copy-tooltip-password">
+                                        <label className="itemMenu-copy-tooltip-label">Copia</label>
+                                </div>
+                            </div>
+                        </div>
                         <label className='itemMenu-label'>Note</label>
                         <textarea className="itemMenu-text" id="itemMenu-input-notes"></textarea>
                     </div>
