@@ -8,6 +8,7 @@ import Item from './components/js/Item';
 import ItemMenu from './components/js/ItemMenu';
 import BackupMenu from './components/js/BackupMenu';
 import PasswMenu from './components/js/PasswMenu';
+import Signup from './components/js/Signup';
 
 import infoAlert from './images/infoAlert.png'
 import warningAlert from './images/warningAlert.png'
@@ -43,7 +44,8 @@ class App extends Component{
             max_number_of_backups: 5,
             backups: []
         },
-        passwMenu: false
+        passwMenu: false,
+        signup: false
     }
 
     componentDidMount(){
@@ -196,15 +198,39 @@ class App extends Component{
         );
     }
 
-    handleSignup = (user, password) => {
+    handleOpenSignup = () => {
+        this.setState({signup: true},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+                document.getElementById('signup-blocker').style.display = 'block';
+            });   
+    }
+
+    // ------------------ SIGNUP EVENTS -----------------------
+
+    handleCloseSignup = () => {
+        this.setState({signup: false},
+            () => {
+                document.getElementsByTagName('body')[0].style.overflow = 'auto';
+                document.getElementById('signup-blocker').style.display = 'none';
+            });
         
-        if(user == "" || password == ""){
-            this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
+    }
+
+    handleSignup = (user, password, rpassword) => {
+        
+        if(user == "" || password == "" || rpassword == ""){
+            this.openAlert("Registrazione", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
 
-        if (user.length > 30 || password.length > 30){
-            this.openAlert("ERROR", "Username e password non possono avare più di 30 caratteri", errorAlert);
+        if (user.length > 30 || password.length > 30 || rpassword.length > 30){
+            this.openAlert("Registrazione", "Username e password non possono avare più di 30 caratteri", errorAlert);
+            return;
+        }
+
+        if (password != rpassword){
+            this.openAlert("Registrazione", "Le due password inseriti devono essere uguali", errorAlert);
             return;
         }
     
@@ -226,20 +252,21 @@ class App extends Component{
             html => {
                 
                 if (html.status == "SUCCESS") {
-                    console.log("signup success");
-                    this.openAlert("SUCCESS", "Registrazione avvenuta con successo", infoAlert);
+                    // console.log("signup success");
+                    this.openAlert("Registrazione", "Registrazione avvenuta con successo", infoAlert);
+                    this.handleCloseSignup();
                 }
                 else {
                     console.error(html.msg);
                     if(html.msg == -3)
-                        this.openAlert("ERROR", "Username già in uso", errorAlert);
+                        this.openAlert("Registrazione", "Username già in uso", errorAlert);
                     else
-                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                        this.openAlert("Registrazione", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
     }
-
+    
     // ------------------- NAVBAR EVENTS ------------------------
     
     handleExit = () =>{
@@ -753,6 +780,7 @@ class App extends Component{
     }
 
     // ------------------------------------------------------
+
       
     render(){
         let page;
@@ -760,6 +788,7 @@ class App extends Component{
         let itemMenu;
         let backupMenu;
         let passwMenu;
+        let signup;
 
         if(this.state.alert.state){
             alert = <Alert
@@ -770,7 +799,22 @@ class App extends Component{
           else
             alert = <></>
 
+        // ------------------ LOGIN PAGE -------------------------
+
         if (this.state.page == 'login'){
+
+            // -------- SIGNUP ----
+
+            if (this.state.signup){
+                signup =  <Signup
+                            onCancel = {this.handleCloseSignup} 
+                            onSignup = {this.handleSignup}
+                        />
+            }
+            else
+                signup = <></>
+
+            // -------- LOGIN ------
             page = <>
                     <div 
                         id="blocker" 
@@ -785,17 +829,36 @@ class App extends Component{
                             display: "none"
                         }} 
                     />
+                    <div 
+                        id="signup-blocker" 
+                        style={{
+                            width: '100%', 
+                            height: '100%', 
+                            backgroundColor: 'black',
+                            opacity: '0.4', 
+                            position: 'fixed', 
+                            top: '0', 
+                            zIndex: '7', 
+                            display: "none"
+                        }} 
+                    />
                     <Login
                         onLogin = {this.handleLogin}
-                        onSignup = {this.handleSignup}
+                        onSignup = {this.handleOpenSignup}
                     />
                     {alert}
+                    {signup}
             </>
 
             document.getElementsByTagName('body')[0].style.backgroundColor = "var(--color1)";
         }
 
+        // ------------------ HOME PAGE ------------------
+
         else if (this.state.page == 'home'){
+            
+            // ------ ITEM MENU -------
+
             if(this.state.itemMenu >= 0){
                 itemMenu = <ItemMenu 
                             onCancel = {this.handleCloseItem} 
@@ -814,6 +877,8 @@ class App extends Component{
             else
               itemMenu = <></>
 
+            // ------ BACKUP MENU -------
+
             if(this.state.backupMenu.state){
                 backupMenu = <BackupMenu 
                                 backups = {this.state.backupMenu.backups}
@@ -825,6 +890,8 @@ class App extends Component{
             else
                 backupMenu = <></>
 
+            // ------ PASSW MENU -------
+
             if(this.state.passwMenu){
                 passwMenu = <PasswMenu
                                 onCancel = {this.handleClosePasswMenu} 
@@ -833,6 +900,9 @@ class App extends Component{
             }
             else
                 passwMenu = <></>
+
+            // ------- HOME -------
+
             page = <>
                     <div 
                         id="blocker" 

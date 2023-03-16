@@ -1,0 +1,91 @@
+@import url('BaseStyle.css');
+
+@media (max-width: 768px){
+
+    #signup-section{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 8;
+    }
+
+    #signup-container{
+        background-color: var(--color3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 1rem;
+        overflow-x: hidden;
+    }
+
+    #signup-container1{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    #signup-container2{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #signup-container2-1{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 0.5rem;
+    }
+
+    #signup-container3{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    #signup-title{
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .signup-passwContainer{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 1rem;
+    }
+
+    #signup-image{
+        height: 6rem;
+        border-radius: 0.5rem;
+    }
+
+    .signup-label{
+        margin-bottom: 0.5rem;
+    }
+
+    #signup-input-username{
+        margin-bottom: 1rem;
+    }
+
+    .signup-showPassw{
+        height: 2rem;
+        width: 2rem;
+        cursor: pointer;
+        margin-left: 1rem;
+    }
+}

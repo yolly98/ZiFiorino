@@ -25,7 +25,7 @@ class Login extends Component{
                 </button>
                 <button  
                     style={{borderRadius: '0.5rem', fontSize: '1.5rem', marginTop: '1.5rem'}} 
-                    onClick={() => this.props.onSignup(document.getElementById('login-input-user').value, document.getElementById('login-input-password').value)}
+                    onClick={() => this.props.onSignup()}
                 >
                     REGISTRATI
                 </button>

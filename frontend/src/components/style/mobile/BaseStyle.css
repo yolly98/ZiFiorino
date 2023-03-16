@@ -37,11 +37,13 @@ p{
     }
 
     input[type='text'], input[type='password'], textarea {
+
         background-color: var(--color4);
         border-radius: 0.5rem;
         border: 0 transparent;
         height: 2rem;
-        width: 15rem;
+        max-width: 20rem;
+        width: 70vw;
         color: var(--color2);
         font-size: 1rem;
         color: var(--color1);
