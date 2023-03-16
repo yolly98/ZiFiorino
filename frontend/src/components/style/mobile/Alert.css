@@ -14,7 +14,8 @@
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 1rem;
-        min-width: 15rem;
+        max-width: 20rem;
+        width: 80vw;
     }
 
     #alert-container1{

@@ -18,6 +18,7 @@
         height: 10rem;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     .item-container1{
