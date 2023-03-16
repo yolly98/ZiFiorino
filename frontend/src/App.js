@@ -59,7 +59,7 @@ class App extends Component{
         .catch(error => console.error(error));
     }
 
-    getItems(){
+    getItems(refresh){
 
         let token = this.state.token;
         let json_msg = {};
@@ -95,16 +95,18 @@ class App extends Component{
                         );
                     }
                     items.sort((a, b) => a.name.localeCompare(b.name));
+                    if(refresh)
+                        this.openAlert("Caricamento dati", "Elementi ricaricati", infoAlert);
                     this.setState({page: 'home', items});
                     // console.log(items);
                 } else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                        this.openAlert("Caricamento dati", "Caricamento dati fallito, qualcosa è andato storto ...", errorAlert);
                 }
             }
         );
@@ -155,12 +157,12 @@ class App extends Component{
     handleLogin = (user, password) =>{
 
         if(user == "" || password == ""){
-            this.openAlert("ERROR", "Tutti i campi devono essere compilati", errorAlert);
+            this.openAlert("Login", "Tutti i campi devono essere compilati", errorAlert);
             return;
         }
 
         if (user.length > 30 || password.length > 30){
-            this.openAlert("ERROR", "Username e password non possono avare più di 30 caratteri", errorAlert);
+            this.openAlert("Login", "Username e password non possono avare più di 30 caratteri", errorAlert);
             return;
         }
     
@@ -185,14 +187,14 @@ class App extends Component{
                     // console.log(token);
                     this.setState(
                         {user, token},
-                        () => {this.getItems()}
+                        () => {this.getItems(false)}
                         );
                 } else {
                     console.error(html.msg);
                     if(html.msg == -3|| html.msg == -4)
-                        this.openAlert("ERROR", "Username o password non corretti", errorAlert);
+                        this.openAlert("Login", "Username o password non corretti", errorAlert);
                     else
-                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                        this.openAlert("Login", "Qualcosa è andato storto...", errorAlert);
                 }
             }
         );
@@ -302,8 +304,7 @@ class App extends Component{
     }
     
     handleRefresh(){
-        this.getItems();
-        this.openAlert("SUCCESS", "Elementi ricaricati", infoAlert);
+        this.getItems(true);
     }
 
     handleOpenBackupMenu(){
@@ -357,11 +358,11 @@ class App extends Component{
                 } else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                        this.openAlert("Backup", "Caricamento fallito", errorAlert);
                 }
             }
         );
@@ -393,8 +394,8 @@ class App extends Component{
     }
 
     handleNewBackup = backup => {
-        let msg = "Vuoi sovrascrivere il backup del " + backup.date + "?";
-        this.openAlert("New Backup", msg, warningAlert, "flex", backup, this.handleCloseAlert, this.createNewBackup);
+        let msg = "Vuoi sovrascrivere il backup '" + backup.date + "'?";
+        this.openAlert("Nuovo Backup", msg, warningAlert, "flex", backup, this.handleCloseAlert, this.createNewBackup);
     }
 
     createNewBackup = () => {
@@ -444,25 +445,25 @@ class App extends Component{
                     backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
-                            this.openAlert("", "Nuovo backup creato con successo", infoAlert);
+                            this.openAlert("Backup", "Nuovo backup creato con successo", infoAlert);
                     });
                 }
                 else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                        this.openAlert("Backup", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
     }
 
     handleRestoreFromBackup = backup => {
-        let msg = "Vuoi importare il backup del " + backup.date + "?";
-        this.openAlert("Restore Backup", msg, warningAlert, "flex", backup, this.handleCloseAlert, this.restoreBackup);
+        let msg = "Vuoi resettare i tuoi dato allo stato del backup '" + backup.date + "'?";
+        this.openAlert("Backup", msg, warningAlert, "flex", backup, this.handleCloseAlert, this.restoreBackup);
     }
 
     restoreBackup = () => {
@@ -493,16 +494,16 @@ class App extends Component{
             html => {
                 if (html.status == "SUCCESS") {
                     this.handleRefresh();
-                    this.openAlert("", "I tuoi dati sono stati riportati allo stato del backup", infoAlert);
+                    this.openAlert("Backup", "I tuoi dati sono stati riportati allo stato del backup", infoAlert);
                 }
                 else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                        this.openAlert("Backup", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
@@ -545,11 +546,11 @@ class App extends Component{
                 } else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Caricamento fallito", errorAlert);
+                        this.openAlert("Apri", "Caricamento dati fallito", errorAlert);
                 }
             }
         );
@@ -638,7 +639,7 @@ class App extends Component{
                     this.setState(
                         {itemMenu: -1, items},
                         function(){
-                            this.openAlert("SUCCESS", "Salvataggio avvenuto con successo", infoAlert);
+                            this.openAlert("", "Salvataggio avvenuto con successo", infoAlert);
                             document.getElementsByTagName('body')[0].style.overflow = 'auto';
                             document.getElementById('item-blocker').style.display = 'none';
                         }
@@ -647,11 +648,11 @@ class App extends Component{
                 else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Salvataggio fallito", infoAlert);
+                        this.openAlert("", "Salvataggio fallito", infoAlert);
                 }
             }
         );
@@ -704,11 +705,11 @@ class App extends Component{
                 else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", ("Rimozione di " + item.name + " fallita"), errorAlert);
+                        this.openAlert("", ("Rimozione di " + item.name + " fallita"), errorAlert);
                 }
             }
         );
@@ -731,15 +732,15 @@ class App extends Component{
         let r_passw = document.getElementsByClassName("passwMenu-input")[1].value;
 
         if(passw == "" || r_passw == ""){
-            this.openAlert("ERROR", "Le password non posso essere vuote", errorAlert);
+            this.openAlert("Nuova Password", "Le password non posso essere vuote", errorAlert);
             return;
         }
         if(passw.length > 30 || r_passw.length > 30){
-            this.openAlert("ERROR", "Le password inserite sono troppo lunghe (massimo 30 caratteri)", errorAlert);
+            this.openAlert("Nuova Password", "Le password inserite sono troppo lunghe (massimo 30 caratteri)", errorAlert);
             return;
         }
         if(passw != r_passw){
-            this.openAlert("ERROR", "Le password inserite non sono uguali", errorAlert);
+            this.openAlert("Nuova Password", "Le password inserite non sono uguali", errorAlert);
             return;
         }
         
@@ -763,17 +764,17 @@ class App extends Component{
                     this.setState({passwMenu: false, page: 'login'},
                         () => {
                             document.getElementsByTagName('body')[0].style.overflow = 'auto';
-                            this.openAlert("", "Password modificata con successo, verrai reindirizzato al login", infoAlert);
+                            this.openAlert("Nuova Password", "Password modificata con successo, verrai reindirizzato al login", infoAlert);
                     });
                 }
                 else {
                     // console.error(html.msg);
                     if(html.msg == -2){
-                        this.openAlert("", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
+                        this.openAlert("Sessione", "Sessione scaduta, verrai reindirizzato al login", warningAlert);
                         this.setState({page: 'login'});
                     }
                     else
-                        this.openAlert("ERROR", "Qualcosa è andato storto...", errorAlert);
+                        this.openAlert("Nuova Password", "Qualcosa è andato storto...", errorAlert);
                 }      
             }
         );
