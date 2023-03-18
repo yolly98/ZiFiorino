@@ -7,6 +7,8 @@
 ZiFiorino is a web app implemented with React JS. The goal is to have a convenient and secure user friendly app in which to store your passwords without relying on third-party services. 
 To delvelop ZiFiorino it's used two container, one for a Apache server and one for MySql.
 
+It's possible to try it at the link https://zifiorino.altervista.org.
+
 ## How to install
 
 ### Prerequisites
