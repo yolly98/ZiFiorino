@@ -1,0 +1,7 @@
+# Usa un'immagine di MySQL per ospitare il database
+FROM mysql:8.0
+ENV MYSQL_ROOT_PASSWORD=password
+COPY db_builder.sql /docker-entrypoint-initdb.d/
+
+# Avvia i servizi Apache e MySQL
+#CMD ["bash", "-c", "service apache2 start && service mysql start && tail -f /dev/null"]
