@@ -8,7 +8,7 @@ build:
 	docker build -f ${SERVER_DOCKERFILE} -t ${SERVER_IMAGE} .
 
 run:
-	sudo docker network create --driver bridge --subnet 172.20.0.0/16 zf-net
+	docker network create --driver bridge --subnet 172.20.0.0/16 zf-net
 	docker run -d --name ${DB_IMAGE} --net zf-net --ip 172.20.0.11 -p 3306:3306 ${DB_IMAGE}
 	docker run -d --name ${SERVER_IMAGE} --net zf-net --ip 172.20.0.10 -p 80:80 ${SERVER_IMAGE}
 

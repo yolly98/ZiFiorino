@@ -1,4 +1,4 @@
-# Usa un'immagine di Node.js per eseguire il comando "npm run build"
+# Use nodejs image to build the react app
 FROM node:14.17.6 as builder
 WORKDIR /app
 COPY frontend/package*.json ./
@@ -6,11 +6,8 @@ RUN npm install
 COPY frontend .
 RUN npm run build
 
-# Usa un'immagine di Apache e PHP per ospitare l'applicazione
+# Use apache-php image to host the app
 FROM php:7.4-apache
 RUN docker-php-ext-install mysqli
 COPY backend /var/www/html/backend
 COPY --from=builder /app/build/ /var/www/html/
-
-# Avvia i servizi Apache e MySQL
-#CMD ["bash", "-c", "service apache2 start && service mysql start && tail -f /dev/null"]
