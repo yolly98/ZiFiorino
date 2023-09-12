@@ -10,7 +10,7 @@ class Login extends Component{
         return(
             <div id="login-page">
                 <div id="login-logo-container">
-                    <img id="login-logo" src={logo}/>
+                    <img loading='lazy' id="login-logo" src={logo}/>
                 </div>
                 <label id="login-title">ZiFiorino</label>
                 <label>Nome Utente</label>

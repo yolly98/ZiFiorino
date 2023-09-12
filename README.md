@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="frontend/public/logo.png" alt="ZiFiorino-Logo" height="64px"/>
+  <img loading='lazy' src="frontend/public/logo.png" alt="ZiFiorino-Logo" height="64px"/>
 </p>
 
 # ZiFiorino

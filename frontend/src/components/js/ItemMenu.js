@@ -75,10 +75,10 @@ class ItemMenu extends Component{
             <div id="itemMenu-section">
                 <div id="itemMenu-container">
                     <div id="itemMenu-container2">
-                        <img src={cross} style={{width: '1.5rem', cursor: 'pointer'}} onClick={()=>this.props.onCancel()}/>
+                        <img loading='lazy' src={cross} style={{width: '1.5rem', cursor: 'pointer'}} onClick={()=>this.props.onCancel()}/>
                     </div>
                     <div id="itemMenu-container3">
-                        <img id="itemMenu-image" src={this.state.image}/>
+                        <img loading='lazy' id="itemMenu-image" src={this.state.image}/>
                         <label className='itemMenu-label'>Nome</label>
                         <input className="itemMenu-text" id="itemMenu-input-name" type="text" style={{marginBottom: '1rem'}}/>
                         <label className='itemMenu-label'>Url Icona</label>
@@ -87,7 +87,7 @@ class ItemMenu extends Component{
                         <div id="itemMenu-usernameContainer" style={{marginBottom: '1rem'}}>
                             <input className="itemMenu-text-cop" id="itemMenu-input-username" type="text" />
                             <div className="itemMenu-container3-1">
-                                <img className="itemMenu-copy" id="itemMenu-copy-username" src={copy} onClick={() => this.copy(0)}></img>
+                                <img loading='lazy' className="itemMenu-copy" id="itemMenu-copy-username" src={copy} onClick={() => this.copy(0)}></img>
                                 <div 
                                     className="itemMenu-copy-tooltip" 
                                     id="itemMenu-copy-tooltip-username">
@@ -99,8 +99,8 @@ class ItemMenu extends Component{
                         <div id="itemMenu-passwContainer" style={{marginBottom: '1rem'}}>
                             <input className="itemMenu-text-cop" id="itemMenu-input-password" type="password"/>
                             <div className="itemMenu-container3-1">
-                                <img id="itemMenu-showPassw" src={showPassw} onClick={() => this.showPassw()}></img>
-                                <img className="itemMenu-copy" id="itemMenu-copy-password" src={copy} onClick={() => this.copy(1)}></img>
+                                <img loading='lazy' id="itemMenu-showPassw" src={showPassw} onClick={() => this.showPassw()}></img>
+                                <img loading='lazy' className="itemMenu-copy" id="itemMenu-copy-password" src={copy} onClick={() => this.copy(1)}></img>
                                 <div 
                                     className="itemMenu-copy-tooltip" 
                                     id="itemMenu-copy-tooltip-password">

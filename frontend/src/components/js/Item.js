@@ -11,13 +11,13 @@ class Item extends Component{
             <div className="item-col" style={{display: this.props.item.display}}>
                 <div className="item-container" onClick={() => this.props.onOpenItem(this.props.item)}>
                     <div className="item-container1">
-                        <img className="image-item" src={this.props.item.image} alt="..." />
+                        <img loading='lazy' className="image-item" src={this.props.item.image} alt="..." />
                         <div className="item-title-container">
                             <label className="item-title">{this.props.item.name}</label>
                         </div>
                     </div>
                     <div className="item-container2">
-                        <img 
+                        <img loading='lazy' 
                             className="img-delete" 
                             src={cross} 
                             alt="..." 

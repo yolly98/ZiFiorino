@@ -25,22 +25,22 @@ class signup extends Component{
                 <div id="signup-container">
                     <div id="signup-container1">
                         <label id="signup-title">Registrati</label>
-                        <img id="signup-cross" style={{width: '1.5rem', cursor: 'pointer'}} onClick={() => this.props.onCancel()} src={cross}/>
+                        <img loading='lazy' id="signup-cross" style={{width: '1.5rem', cursor: 'pointer'}} onClick={() => this.props.onCancel()} src={cross}/>
                     </div>
                     <div id="signup-container2">
-                        <img id="signup-image" src={logo}/>
+                        <img loading='lazy' id="signup-image" src={logo}/>
                         <div id="signup-container2-1">
                             <label className="signup-label">Inserisci Username</label>
                             <input className="signup-input" id="signup-input-username" type='text'></input>
                             <label className="signup-label">Inserisci Password</label>
                             <div className="signup-passwContainer">
                                 <input className="signup-input" id="signup-input-passw" type='password'></input>
-                                <img className="signup-showPassw" src={showPassw} onClick={() => this.showPassw(1)}></img>
+                                <img loading='lazy' className="signup-showPassw" src={showPassw} onClick={() => this.showPassw(1)}></img>
                             </div>
                             <label className="signup-label">Ripeti Password</label>
                             <div className="signup-passwContainer">
                                 <input className="signup-input" id="signup-input-rpassw" type='password'></input>
-                                <img className="signup-showPassw" src={showPassw} onClick={() => this.showPassw(2)}></img>
+                                <img loading='lazy' className="signup-showPassw" src={showPassw} onClick={() => this.showPassw(2)}></img>
                             </div>
                         </div>
                     </div>

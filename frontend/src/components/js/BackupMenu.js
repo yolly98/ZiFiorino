@@ -18,7 +18,7 @@ class BackupMenu extends Component{
                 <div id="backupMenu-container">
                     <div id="backupMenu-container1">
                         <label id="backupMenu-title">I tuoi backup</label>
-                        <img src={cross} style={{width: '1.5rem', cursor: 'pointer'}} onClick={()=>this.props.onCancel()}/>
+                        <img loading='lazy' src={cross} style={{width: '1.5rem', cursor: 'pointer'}} onClick={()=>this.props.onCancel()}/>
                     </div>
                     <div id="backupMenu-container2">
                         {
@@ -29,8 +29,8 @@ class BackupMenu extends Component{
                             >
                                 <label>{backup.date}</label>
                                 <div id="backupMenu-item-container">
-                                    <img id="backupMenu-item-new" src={create} style={{width: '2rem', cursor: 'pointer', marginRight: '1.2rem'}} onClick={()=>this.props.onNew(backup)}/>
-                                    <img id="backupMenu-item-restore" src={restore} style={{width: '2.5rem', cursor: 'pointer'}} onClick={()=>this.props.onRestore(backup)}/>
+                                    <img loading='lazy' id="backupMenu-item-new" src={create} style={{width: '2rem', cursor: 'pointer', marginRight: '1.2rem'}} onClick={()=>this.props.onNew(backup)}/>
+                                    <img loading='lazy' id="backupMenu-item-restore" src={restore} style={{width: '2.5rem', cursor: 'pointer'}} onClick={()=>this.props.onRestore(backup)}/>
                                 </div>
                             </div>
                             ))

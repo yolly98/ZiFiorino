@@ -25,20 +25,20 @@ class PasswMenu extends Component{
                 <div id="passwMenu-container">
                     <div id="passwMenu-container1">
                         <label id="passwMenu-title">Cambia Password</label>
-                        <img id="passwMenu-cross" style={{width: '1.5rem', cursor: 'pointer'}} onClick={() => this.props.onCancel()} src={cross}/>
+                        <img loading='lazy' id="passwMenu-cross" style={{width: '1.5rem', cursor: 'pointer'}} onClick={() => this.props.onCancel()} src={cross}/>
                     </div>
                     <div id="passwMenu-container2">
-                        <img id="passwMenu-image" src={changePassw}/>
+                        <img loading='lazy' id="passwMenu-image" src={changePassw}/>
                         <div id="passwMenu-container2-1">
                             <label className="passwMenu-label">Inserisci Nuova Password</label>
                             <div className="passwMenu-passwContainer">
                                 <input className="passwMenu-input" type='password'></input>
-                                <img className="passwMenu-showPassw" src={showPassw} onClick={() => this.showPassw(0)}></img>
+                                <img loading='lazy' className="passwMenu-showPassw" src={showPassw} onClick={() => this.showPassw(0)}></img>
                             </div>
                             <label className="passwMenu-label">Ripeti Nuova Password</label>
                             <div className="passwMenu-passwContainer">
                                 <input className="passwMenu-input" type='password'></input>
-                                <img className="passwMenu-showPassw" src={showPassw} onClick={() => this.showPassw(1)}></img>
+                                <img loading='lazy' className="passwMenu-showPassw" src={showPassw} onClick={() => this.showPassw(1)}></img>
                             </div>
                         </div>
                     </div>

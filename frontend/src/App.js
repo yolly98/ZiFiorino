@@ -347,7 +347,50 @@ class App extends Component{
                         );
                     }
 
-                    backups.sort((a, b) => a.date.localeCompare(b.date));
+                    backups.sort((a, b) => {
+                        
+                        let arrayA = a.date.split(', ');
+                        let dateA = arrayA[0].split('-');
+                        let hourA = arrayA[1].split(':');
+                        let arrayB = b.date.split(', ');
+                        let dateB = arrayB[0].split('-');
+                        let hourB = arrayB[1].split(':');
+                    
+                        // Confronto per anno
+                        const yearComparison = Number(dateB[2]) - Number(dateA[2]);
+                        if (yearComparison !== 0) {
+                            return yearComparison;
+                        }
+                    
+                        // Confronto per mese
+                        const monthComparison = Number(dateB[1]) - Number(dateA[1]);
+                        if (monthComparison !== 0) {
+                            return monthComparison;
+                        }
+                    
+                        // Confronto per giorno
+                        const dayComparison = Number(dateB[0]) - Number(dateA[0]);
+                        if (dayComparison !== 0) {
+                            return dayComparison;
+                        }
+                    
+                        // Confronto per ora
+                        const hourComparison = Number(hourB[0]) - Number(hourA[0]);
+                        if (hourComparison !== 0) {
+                            return hourComparison;
+                        }
+                    
+                        // Confronto per minuto
+                        const minuteComparison = Number(hourB[1]) - Number(hourA[1]);
+                        if (minuteComparison !== 0) {
+                            return minuteComparison;
+                        }
+                    
+                        // Confronto per secondo
+                        const secondComparison = Number(hourB[2]) - Number(hourA[2]);
+                        return secondComparison;
+                    });
+                    
                     backupMenu.backups = backups;
                     this.setState({backupMenu},
                         () => {
@@ -936,11 +979,11 @@ class App extends Component{
                         onExit = {this.handleExit}
                         onSearch = {this.handleSearch}
                     />
-                    <img id="add-item" src={add} onClick={() => this.handleAddItem()} />
-                    <img id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
-                    <img id="open-backup" src={backup} onClick={() => this.handleOpenBackupMenu()} />
-                    <img id="change-passw" src={changePassw} onClick={() => this.handleChangePassw()} />
-                    <img id="user-guide" src={userGuide} onClick={() => this.handleOpenUserGuide()} />
+                    <img loading='lazy' id="add-item" src={add} onClick={() => this.handleAddItem()} />
+                    <img loading='lazy' id="refresh" src={refresh} onClick={() => this.handleRefresh()} />
+                    <img loading='lazy' id="open-backup" src={backup} onClick={() => this.handleOpenBackupMenu()} />
+                    <img loading='lazy' id="change-passw" src={changePassw} onClick={() => this.handleChangePassw()} />
+                    <img loading='lazy' id="user-guide" src={userGuide} onClick={() => this.handleOpenUserGuide()} />
 
                     <div className='items-container'>
                     {

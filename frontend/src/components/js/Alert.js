@@ -20,10 +20,10 @@ class Alert extends Component{
                 <div>
                     <div id="alert-container1">
                         <label id="alert-title">{this.state.title}</label>
-                        <img id="alert-cross" onClick={() => this.props.closeAlert()} src={cross}/>
+                        <img loading='lazy' id="alert-cross" onClick={() => this.props.closeAlert()} src={cross}/>
                     </div>
                     <div id="alert-container2">
-                        <img id="alert-image" src={this.state.image}/>
+                        <img loading='lazy' id="alert-image" src={this.state.image}/>
                         <p id="alert-text">{this.state.text}</p>
                     </div>
                     <div id="alert-container3" style={{display: this.state.confirmationDisplay}}>
