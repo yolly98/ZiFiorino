@@ -349,6 +349,11 @@ class App extends Component{
 
                     backups.sort((a, b) => {
                         
+                        if( a.date == 'Vuoto')
+                            return false;
+                        if( b.date == 'Vuoto')
+                            return true;
+
                         let arrayA = a.date.split(', ');
                         let dateA = arrayA[0].split('-');
                         let hourA = arrayA[1].split(':');
