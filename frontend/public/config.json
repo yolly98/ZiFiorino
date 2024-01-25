@@ -1,3 +1,3 @@
 {
-    "server_url": "http://192.168.178.33:80/backend/requests/"
+    "server_url": "http://localhost:80/backend/requests/"
 }
