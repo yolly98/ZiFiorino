@@ -103,6 +103,7 @@ ZiFiorino-release
 - Open a browser and go to your machine ip address
 
 ## Problems
+- You may need to change the server ip address in the frontend/public/config.json file, otherwise you will only be able to use the app from the same machine where the server is installed
 - The communication shoud be under HTTPS because the security of the communication is not guaranted
 - If you don't want configure an HTTPS server with a SSL certificate you can adopt a VPN approach (for instance Wireguard)
 - If you want access to ZiFiorino from the extern of your LAN network and you don't want expose your Apache server, you can use a VPN but you should have a static ip address for your machine. You can solve the static ip problem with the NoIp DNS service or similar.
