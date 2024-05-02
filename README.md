@@ -9,6 +9,37 @@ To delvelop ZiFiorino it's used two container, one for a Apache server and one f
 
 It's possible to try it at the link https://zifiorino.altervista.org.
 
+## User Guide
+
+### The Login/Sign-up Page
+<p align="center">
+  <img loading='lazy' src="doc/login-en.drawio.png" alt=""/>
+</p>
+
+<p align="center">
+  <img loading='lazy' src="doc/signup-en.drawio.png" alt=""/>
+</p>
+
+### The Main Page
+<p align="center">
+  <img loading='lazy' src="doc/home-en.drawio.png" alt=""/>
+</p>
+
+### The Elelement Window
+<p align="center">
+  <img loading='lazy' src="doc/itemMenu-en.drawio.png" alt=""/>
+</p>
+
+### The Backup Window
+<p align="center">
+  <img loading='lazy' src="doc/backup-en.drawio.png" alt=""/>
+</p>
+
+### The Change-Password Window
+<p align="center">
+  <img loading='lazy' src="doc/change-passw-en.drawio.png" alt=""/>
+</p>
+
 ## How to install
 
 ### Prerequisites
@@ -75,6 +106,11 @@ ZiFiorino-release
 - The communication shoud be under HTTPS because the security of the communication is not guaranted
 - If you don't want configure an HTTPS server with a SSL certificate you can adopt a VPN approach (for instance Wireguard)
 - If you want access to ZiFiorino from the extern of your LAN network and you don't want expose your Apache server, you can use a VPN but you should have a static ip address for your machine. You can solve the static ip problem with the NoIp DNS service or similar.
+
+<p align="center">
+  <img loading='lazy' src="doc/architecture.drawio.png" alt=""/>
+</p>
+
 
 ## Notes about data security
 
